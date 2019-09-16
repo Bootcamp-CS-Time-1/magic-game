@@ -12,9 +12,22 @@ package br.com.bootcamp.magicgamecs.domain
  *          // Regras de negócio
  *      }
  *
- *      data class Params(val sortBy: String, val searchTerm: String)
+ *      data class Params(val searchTerm: String, val sortBy: String)
  * }
  * ```
+ *
+ * uso:
+ *
+ * ```
+ * class FooViewModel(private val searchFooByTermSorted: SearchFooByTermSorted) {
+ *      fun search(term: String, sortBy: String) {
+ *          // Some code
+ *          val foos = searchFooByTermSorted(SearchFooByTermSorted.Params(term, sortBy))
+ *          // Remaining code
+ *      }
+ * }
+ * ```
+ *
  *
  * Para `UseCases` que não necessitam de parametros estender `UseCase.NoParam<Source>`
  * Exemplo:
