@@ -15,7 +15,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "API_BASE_URL", "\"https://api.magicthegathering.io/\""
+        buildConfigField "String", "API_BASE_URL", '"https://api.magicthegathering.io/v1/"'
 
     }
     buildTypes {
@@ -24,6 +24,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            //foi só para teste
             buildConfigField "String", "NOME_DA_VARIAVEL", '"https://google.com"'
         }
     }
