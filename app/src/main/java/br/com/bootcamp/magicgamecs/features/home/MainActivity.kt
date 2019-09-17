@@ -1,4 +1,4 @@
-package br.com.bootcamp.magicgamecs.features
+package br.com.bootcamp.magicgamecs.features.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
