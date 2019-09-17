@@ -15,12 +15,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-
     </style>
 
     <style name="RobotoTextViewStyle" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/sf_pro_display_regular</item>
-
     </style>
 
 </resources>
