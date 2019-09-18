@@ -1,7 +1,6 @@
 package br.com.bootcamp.magicgamecs.core.di.modules
 
-import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
-import br.com.bootcamp.magicgamecs.features.home.SetsDataSourceFactory
+import br.com.bootcamp.magicgamecs.domain.FetchMagicSetsPage
 import br.com.bootcamp.magicgamecs.features.home.SetsViewModel
 import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
 import br.com.bootcamp.magicgamecs.models.repository.impl.MagicRepositoryImpl
@@ -58,11 +57,7 @@ val appModule = module {
     }
 
     factory {
-        SetsDataSourceFactory(get())
-    }
-
-    factory {
-        LoadMagicSetsByPage(get())
+        FetchMagicSetsPage(get())
     }
 
     factory<MagicRepository> {

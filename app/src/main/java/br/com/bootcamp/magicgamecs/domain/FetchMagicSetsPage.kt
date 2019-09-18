@@ -6,9 +6,9 @@ import br.com.bootcamp.magicgamecs.models.pojo.MagicSet
 import br.com.bootcamp.magicgamecs.models.pojo.PageResult
 import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
 
-class LoadMagicSetsByPage(
+class FetchMagicSetsPage(
     private val repository: MagicRepository
-) : UseCase<LoadMagicSetsByPage.Params, PageResult<List<MagicSet>>>() {
+) : UseCase<FetchMagicSetsPage.Params, PageResult<List<MagicSet>>>() {
 
     private val sets = mutableListOf<MagicSet>()
 
@@ -27,12 +27,12 @@ class LoadMagicSetsByPage(
             } while (result.size == limit)
 
             val grouped = allCards.groupBy { it.type }
-                .map { CardType(it.key, it.value) }.slice(0..5)
+                .map { CardType(it.key, it.value) }
 
             magicSet.typedCards.addAll(grouped)
         }
         val nextPage = (params.page + 1).takeIf { it < sets.size }
-        return PageResult(listOf(magicSet), sets.size, nextPage)
+        return PageResult(magicSets.slice(0..params.page), sets.size, nextPage)
     }
 
     private suspend fun getSets(): List<MagicSet> {

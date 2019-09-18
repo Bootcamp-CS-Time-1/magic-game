@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.ext.gone
 import br.com.bootcamp.magicgamecs.core.ext.show
+import br.com.bootcamp.magicgamecs.core.listeners.EndlessRecyclerViewScrollListener
 import br.com.bootcamp.magicgamecs.models.pojo.Card
+import br.com.bootcamp.magicgamecs.models.pojo.State
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     private val setsAdapter by lazy {
         SetsAdapter()
     }
+
+    private val RecyclerView.gridLayoutManager: GridLayoutManager
+        get() = layoutManager as GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         setsAdapter.setOnCardClickListener { position, card ->
             navigateToCard(position, card)
         }
-        setsViewModel.itemsSet.observe(this, Observer {
+        setsViewModel.getItemsSet().observe(this, Observer {
             setsAdapter.submitList(it)
         })
     }
@@ -66,8 +71,10 @@ class MainActivity : AppCompatActivity() {
     private fun RecyclerView.setUp() {
         adapter = setsAdapter
         gridLayoutManager.spanSizeLookup = setsAdapter.SpanSizeLookup()
+        addOnScrollListener(
+            EndlessRecyclerViewScrollListener(layoutManager!!) {
+                setsViewModel.fetchMoreItems()
+            }
+        )
     }
-
-    private val RecyclerView.gridLayoutManager: GridLayoutManager
-        get() = layoutManager as GridLayoutManager
 }

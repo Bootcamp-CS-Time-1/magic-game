@@ -3,9 +3,9 @@ package br.com.bootcamp.magicgamecs.features.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.models.pojo.Card
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_main_activity_type.view.*
 
 typealias OnCardClickListener = (position: Int, card: Card) -> Unit
 
-class SetsAdapter : PagedListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(DIFF_CALLBACK) {
+class SetsAdapter : ListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(DIFF_CALLBACK) {
 
     private var onCardClickListener: OnCardClickListener? = null
 
@@ -74,7 +74,7 @@ class SetsAdapter : PagedListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(D
             Glide
                 .with(itemView.context)
                 .load(card.imageUrl)
-                .centerCrop()
+                //.transform(RoundedCorners(10))
                 .into(itemView.imageView_card_item)
         }
     }

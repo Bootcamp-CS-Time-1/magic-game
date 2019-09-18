@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PageKeyedDataSource.LoadInitialParams
 import br.com.bootcamp.magicgamecs.models.pojo.CardType
-import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
+import br.com.bootcamp.magicgamecs.domain.FetchMagicSetsPage
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.MagicSet
+import br.com.bootcamp.magicgamecs.models.pojo.State
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,7 @@ class SetsDataSourceTest {
     private val dispatcher = Dispatchers.Unconfined
 
     @MockK
-    lateinit var loadMagicSetsByPage: LoadMagicSetsByPage
+    lateinit var fetchMagicSetsPage: FetchMagicSetsPage
 
     @Before
     fun setUp() {
@@ -34,7 +35,7 @@ class SetsDataSourceTest {
         val initialLoadState = spyk<MutableLiveData<State>>()
         val paginatedLoadState = spyk<MutableLiveData<State>>()
         val setsDataSource =
-            SetsDataSource(loadMagicSetsByPage, initialLoadState, paginatedLoadState, dispatcher)
+            SetsDataSource(fetchMagicSetsPage, initialLoadState, paginatedLoadState, dispatcher)
 
         val card0 = Card("1", "image1")
         val card1 = Card("2", "image2")
@@ -78,7 +79,7 @@ class SetsDataSourceTest {
         )
 
         coEvery {
-            loadMagicSetsByPage.invoke(LoadMagicSetsByPage.Params(1))
+            fetchMagicSetsPage.invoke(FetchMagicSetsPage.Params(1))
         } returns magicSet0
 
         val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
@@ -98,7 +99,7 @@ class SetsDataSourceTest {
         val initialLoadState = spyk<MutableLiveData<State>>()
         val paginatedLoadState = spyk<MutableLiveData<State>>()
         val setsDataSource =
-            SetsDataSource(loadMagicSetsByPage, initialLoadState, paginatedLoadState, dispatcher)
+            SetsDataSource(fetchMagicSetsPage, initialLoadState, paginatedLoadState, dispatcher)
 
         val magicSet0 = MagicSet(
             "a",
@@ -107,7 +108,7 @@ class SetsDataSourceTest {
         )
 
         coEvery {
-            loadMagicSetsByPage.invoke(LoadMagicSetsByPage.Params(1))
+            fetchMagicSetsPage.invoke(FetchMagicSetsPage.Params(1))
         } returns magicSet0
 
         val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
