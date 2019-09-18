@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
 
 class SetsViewModel(
     private val setsDataSourceFactory: SetsDataSourceFactory
@@ -22,7 +23,8 @@ class SetsViewModel(
 
     private fun initializePagedList(): LivePagedListBuilder<Int, ItemSet> {
         val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(true)
+            .setEnablePlaceholders(false)
+            .setPageSize(4)
             .build()
         return LivePagedListBuilder<Int, ItemSet>(setsDataSourceFactory, config)
     }

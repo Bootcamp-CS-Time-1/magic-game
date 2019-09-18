@@ -1,8 +1,8 @@
 package br.com.bootcamp.magicgamecs.domain
 
-import br.com.bootcamp.magicgamecs.models.Card
-import br.com.bootcamp.magicgamecs.models.CardType
-import br.com.bootcamp.magicgamecs.models.MagicSet
+import br.com.bootcamp.magicgamecs.models.pojo.Card
+import br.com.bootcamp.magicgamecs.models.pojo.CardType
+import br.com.bootcamp.magicgamecs.models.pojo.MagicSet
 import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
 
 class LoadMagicSetsByPage(
@@ -12,15 +12,16 @@ class LoadMagicSetsByPage(
     private val sets = mutableListOf<MagicSet>()
 
     override suspend fun run(params: Params): MagicSet {
-        val magicSet = getSets()[params.page]
+        val magicSets = getSets()
+        val magicSet = magicSets[params.page]
+
         if (magicSet.typedCards.isEmpty()) {
             var page = 0
             val limit = 100
             val allCards = mutableListOf<Card>()
 
             do {
-                page++
-                val result = repository.getCards(magicSet.code, page, limit)
+                val result = repository.getCards(magicSet.code, ++page, limit)
                 allCards.addAll(result)
             } while (result.size == limit)
 
@@ -39,5 +40,5 @@ class LoadMagicSetsByPage(
         return sets
     }
 
-    data class Params(val page: Int)
+    data class Params(val page: Int = 0)
 }

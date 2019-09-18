@@ -1,13 +1,8 @@
 package br.com.bootcamp.magicgamecs.models.pojo
 
-class Card (
-    multiverseid:Int,
-    name:String,
-    type:String,
-    rarity:String,
-    number:Int,
-    power:Int,
-    imageUrl:String,
-    text:String,
-    originalText:String
+data class Card(
+    val id: String,
+    val imageUrl: String,
+    val type: String = "",
+    val name: String = ""
 )

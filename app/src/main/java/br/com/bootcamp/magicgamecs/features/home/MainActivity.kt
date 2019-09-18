@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.ext.gone
 import br.com.bootcamp.magicgamecs.core.ext.show
-import br.com.bootcamp.magicgamecs.models.Card
+import br.com.bootcamp.magicgamecs.models.pojo.Card
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             }
             is State.Failed -> {
                 progressBar.gone()
+                state.error.printStackTrace()
                 // TODO show error state
             }
         }

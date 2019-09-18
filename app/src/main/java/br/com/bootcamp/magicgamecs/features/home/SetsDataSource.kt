@@ -34,7 +34,7 @@ class SetsDataSource(
         ioScope.launch {
             try {
                 initialLoadState.postValue(State.Loading)
-                callback.onResult(loadPage(1), null, 2)
+                callback.onResult(loadPage(0), null, 1)
                 initialLoadState.postValue(State.Loaded)
             } catch (e: Exception) {
                 initialLoadState.postValue(State.Failed(e))

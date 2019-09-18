@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bootcamp.magicgamecs.R
-import br.com.bootcamp.magicgamecs.models.Card
+import br.com.bootcamp.magicgamecs.models.pojo.Card
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_activity_card.view.*
 import kotlinx.android.synthetic.main.item_main_activity_edition.view.*
@@ -18,7 +18,7 @@ typealias OnCardClickListener = (position: Int, card: Card) -> Unit
 
 class SetsAdapter : PagedListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(DIFF_CALLBACK) {
 
-    private var onCardClickListener: OnCardClickListener = { _, _ -> }
+    private var onCardClickListener: OnCardClickListener? = null
 
     fun setOnCardClickListener(listener: OnCardClickListener) {
         this.onCardClickListener = listener
@@ -62,7 +62,7 @@ class SetsAdapter : PagedListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(D
             itemView.imageView_card_item.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val card = getItem(adapterPosition) as CardItemSet
-                    onCardClickListener(adapterPosition, card.content)
+                    onCardClickListener?.invoke(adapterPosition, card.content)
                 }
             }
         }

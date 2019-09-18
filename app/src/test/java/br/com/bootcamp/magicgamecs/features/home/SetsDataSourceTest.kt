@@ -4,10 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PageKeyedDataSource.LoadInitialParams
-import br.com.bootcamp.magicgamecs.models.Card
-import br.com.bootcamp.magicgamecs.models.CardType
+import br.com.bootcamp.magicgamecs.models.pojo.CardType
 import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
-import br.com.bootcamp.magicgamecs.models.MagicSet
+import br.com.bootcamp.magicgamecs.models.pojo.Card
+import br.com.bootcamp.magicgamecs.models.pojo.MagicSet
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +52,7 @@ class SetsDataSourceTest {
         val magicSet0 = MagicSet(
             "a",
             "name",
-            listOf(typedCard0, typedCard1)
+            mutableListOf(typedCard0, typedCard1)
         )
 
         /*
@@ -79,7 +79,7 @@ class SetsDataSourceTest {
 
         coEvery {
             loadMagicSetsByPage.invoke(LoadMagicSetsByPage.Params(1))
-        } returns listOf(magicSet0)
+        } returns magicSet0
 
         val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
 
@@ -103,12 +103,12 @@ class SetsDataSourceTest {
         val magicSet0 = MagicSet(
             "a",
             "name",
-            listOf()
+            mutableListOf()
         )
 
         coEvery {
             loadMagicSetsByPage.invoke(LoadMagicSetsByPage.Params(1))
-        } returns listOf(magicSet0)
+        } returns magicSet0
 
         val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
 

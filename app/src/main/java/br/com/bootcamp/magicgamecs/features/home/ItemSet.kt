@@ -1,6 +1,6 @@
 package br.com.bootcamp.magicgamecs.features.home
 
-import br.com.bootcamp.magicgamecs.models.Card
+import br.com.bootcamp.magicgamecs.models.pojo.Card
 
 sealed class ItemSet(val spanSize: Int)
 
