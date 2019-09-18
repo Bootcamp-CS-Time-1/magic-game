@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
 import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
+import br.com.bootcamp.magicgamecs.models.pojo.PageResult
 import kotlinx.coroutines.*
 
 class SetsDataSourceFactory(
@@ -34,7 +35,8 @@ class SetsDataSource(
         ioScope.launch {
             try {
                 initialLoadState.postValue(State.Loading)
-                callback.onResult(loadPage(0), null, 1)
+                val result = loadPage(0)
+                callback.onResult(result.data, null, result.nextPage)
                 initialLoadState.postValue(State.Loaded)
             } catch (e: Exception) {
                 initialLoadState.postValue(State.Failed(e))
@@ -47,8 +49,7 @@ class SetsDataSource(
             try {
                 paginatedLoadState.postValue(State.Loading)
                 val result = loadPage(params.key)
-                val nextPage = (params.key + 1).takeIf { result.isNotEmpty() }
-                callback.onResult(result, nextPage)
+                callback.onResult(result.data, result.nextPage)
                 paginatedLoadState.postValue(State.Loaded)
             } catch (e: Exception) {
                 paginatedLoadState.postValue(State.Failed(e))
@@ -59,15 +60,18 @@ class SetsDataSource(
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, ItemSet>) {
     }
 
-    private suspend fun loadPage(page: Int): List<ItemSet> =
-        listOf(loadMagicSetsByPage(LoadMagicSetsByPage.Params(page)))
+    private suspend fun loadPage(page: Int): PageResult<List<ItemSet>> {
+        val result = loadMagicSetsByPage(LoadMagicSetsByPage.Params(page))
+        val data = result.data
             .flatMap { set ->
                 listOf(EditionItemSet(set.name)) +
                         set.typedCards.flatMap { type ->
-                            listOf(TypeItemSet(type.type)) +
+                            listOf(TypeItemSet(set.code, type.type)) +
                                     type.cards.map { card -> CardItemSet(card) }
                         }
             }
+        return PageResult(data, result.total, result.nextPage)
+    }
 }
 
 sealed class State {

@@ -36,6 +36,7 @@ class SetsAdapter : PagedListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(D
             R.layout.item_main_activity_card -> CardViewHolder(view)
             R.layout.item_main_activity_type -> TypeViewHolder(view)
             R.layout.item_main_activity_edition -> SetViewHolder(view)
+            R.layout.item_main_activity_placeholder -> PlaceholderViewHolder(view)
             else -> error("Invalid view type")
         } as ViewHolder<ItemSet>
     }
@@ -50,6 +51,7 @@ class SetsAdapter : PagedListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(D
         is CardItemSet -> R.layout.item_main_activity_card
         is TypeItemSet -> R.layout.item_main_activity_type
         is EditionItemSet -> R.layout.item_main_activity_edition
+        is Placeholder -> R.layout.item_main_activity_placeholder
         else -> error("Item type not supported")
     }
 
@@ -86,6 +88,11 @@ class SetsAdapter : PagedListAdapter<ItemSet, SetsAdapter.ViewHolder<ItemSet>>(D
     class TypeViewHolder(view: View) : ViewHolder<TypeItemSet>(view) {
         override fun bindTo(item: TypeItemSet) {
             itemView.textView_type_item.text = item.text
+        }
+    }
+
+    class PlaceholderViewHolder(view: View) : ViewHolder<Placeholder>(view) {
+        override fun bindTo(item: Placeholder) {
         }
     }
 

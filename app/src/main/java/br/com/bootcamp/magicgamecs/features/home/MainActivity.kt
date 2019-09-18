@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    private fun onInitialStateChanged(state: State?) {
+    private fun onInitialStateChanged(state: State) {
         when (state) {
             is State.Loading -> progressBar.show()
             is State.Loaded -> {

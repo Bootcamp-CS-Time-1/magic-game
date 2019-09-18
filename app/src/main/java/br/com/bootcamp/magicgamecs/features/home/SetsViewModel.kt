@@ -23,8 +23,8 @@ class SetsViewModel(
 
     private fun initializePagedList(): LivePagedListBuilder<Int, ItemSet> {
         val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setPageSize(4)
+            .setEnablePlaceholders(true)
+            .setPageSize(2)
             .build()
         return LivePagedListBuilder<Int, ItemSet>(setsDataSourceFactory, config)
     }
