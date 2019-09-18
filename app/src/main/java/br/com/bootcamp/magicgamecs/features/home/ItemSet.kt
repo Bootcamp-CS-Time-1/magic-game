@@ -1,7 +1,11 @@
 package br.com.bootcamp.magicgamecs.features.home
 
-interface ItemSet
+import br.com.bootcamp.magicgamecs.models.Card
 
-data class TitleItemSet(val text: String) : ItemSet
-data class SubtitleItemSet(val text: String) : ItemSet
-data class CardItemSet(val id: String, val image: String) : ItemSet
+sealed class ItemSet(val spanSize: Int)
+
+data class EditionItemSet(val text: String) : ItemSet(3)
+
+data class TypeItemSet(val text: String) : ItemSet(3)
+
+data class CardItemSet(val content: Card) : ItemSet(1)

@@ -1,5 +1,6 @@
 package br.com.bootcamp.magicgamecs.features.home
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
 import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
@@ -8,12 +9,18 @@ import kotlinx.coroutines.*
 class SetsDataSourceFactory(
     private val loadMagicSetsByPage: LoadMagicSetsByPage
 ) : DataSource.Factory<Int, ItemSet>() {
+
+    val initialLoadState = MutableLiveData<State>()
+    val paginatedLoadState = MutableLiveData<State>()
+
     override fun create() =
-        SetsDataSource(loadMagicSetsByPage)
+        SetsDataSource(loadMagicSetsByPage, initialLoadState, paginatedLoadState)
 }
 
 class SetsDataSource(
     private val loadMagicSetsByPage: LoadMagicSetsByPage,
+    private val initialLoadState: MutableLiveData<State>,
+    private val paginatedLoadState: MutableLiveData<State>,
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : PageKeyedDataSource<Int, ItemSet>() {
 
@@ -26,9 +33,11 @@ class SetsDataSource(
     ) {
         ioScope.launch {
             try {
+                initialLoadState.postValue(State.Loading)
                 callback.onResult(loadPage(1), null, 2)
+                initialLoadState.postValue(State.Loaded)
             } catch (e: Exception) {
-                e.printStackTrace()
+                initialLoadState.postValue(State.Failed(e))
             }
         }
     }
@@ -36,9 +45,12 @@ class SetsDataSource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, ItemSet>) {
         ioScope.launch {
             try {
-                callback.onResult(loadPage(params.key), params.key + 1)
+                paginatedLoadState.postValue(State.Loading)
+                val result = loadPage(params.key)
+                callback.onResult(result, params.key + 1)
+                paginatedLoadState.postValue(State.Loaded)
             } catch (e: Exception) {
-                e.printStackTrace()
+                paginatedLoadState.postValue(State.Failed(e))
             }
         }
     }
@@ -48,12 +60,17 @@ class SetsDataSource(
 
     private suspend fun loadPage(page: Int): List<ItemSet> =
         loadMagicSetsByPage(LoadMagicSetsByPage.Params(page))
-            .flatMap {
-                listOf<ItemSet>(TitleItemSet(it.name)) + it.categorizedCards.flatMap { category ->
-                    listOf<ItemSet>(SubtitleItemSet(category.type)) + category.cards.map { card ->
-                        CardItemSet(card.id, card.image)
-                    }
-                }
+            .flatMap { set ->
+                listOf(EditionItemSet(set.name)) +
+                        set.cardTypes.flatMap { type ->
+                            listOf(TypeItemSet(type.type)) +
+                                    type.cards.map { card -> CardItemSet(card) }
+                        }
             }
+}
 
+sealed class State {
+    object Loading : State()
+    object Loaded : State()
+    data class Failed(val error: Throwable) : State()
 }

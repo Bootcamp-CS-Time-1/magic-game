@@ -2,10 +2,10 @@ package br.com.bootcamp.magicgamecs.features.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PageKeyedDataSource
-import br.com.bootcamp.magicgamecs.domain.Card
-import br.com.bootcamp.magicgamecs.domain.CategorizedCards
+import br.com.bootcamp.magicgamecs.models.Card
+import br.com.bootcamp.magicgamecs.models.CardType
 import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
-import br.com.bootcamp.magicgamecs.domain.MagicSet
+import br.com.bootcamp.magicgamecs.models.MagicSet
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +21,7 @@ class SetsDataSourceTest {
     @MockK
     lateinit var loadMagicSetsByPage: LoadMagicSetsByPage
 
-    lateinit var setsDataSource: SetsDataSource
+    private lateinit var setsDataSource: SetsDataSource
 
     @Before
     fun setUp() {
@@ -38,10 +38,18 @@ class SetsDataSourceTest {
         val card3 = Card("4", "image4")
         val card4 = Card("5", "image5")
 
-        val categorizedCards0 = CategorizedCards("typeA", listOf(card0, card1))
-        val categorizedCards1 = CategorizedCards("typeB", listOf(card2, card3, card4))
+        val categorizedCards0 =
+            CardType("typeA", listOf(card0, card1))
+        val categorizedCards1 = CardType(
+            "typeB",
+            listOf(card2, card3, card4)
+        )
 
-        val magicSet0 = MagicSet("a", "name", listOf(categorizedCards0, categorizedCards1))
+        val magicSet0 = MagicSet(
+            "a",
+            "name",
+            listOf(categorizedCards0, categorizedCards1)
+        )
 
         coEvery {
             loadMagicSetsByPage.invoke(LoadMagicSetsByPage.Params(1))
@@ -56,14 +64,14 @@ class SetsDataSourceTest {
         coVerify {
             callback.onResult(
                 listOf(
-                    TitleItemSet(magicSet0.name),
-                    SubtitleItemSet(categorizedCards0.type),
-                    CardItemSet(card0.id, card0.image),
-                    CardItemSet(card1.id, card1.image),
-                    SubtitleItemSet(categorizedCards1.type),
-                    CardItemSet(card2.id, card2.image),
-                    CardItemSet(card3.id, card3.image),
-                    CardItemSet(card4.id, card4.image)
+                    EditionItemSet(magicSet0.name),
+                    TypeItemSet(categorizedCards0.type),
+                    CardItemSet(card0.id, card0.imageUrl),
+                    CardItemSet(card1.id, card1.imageUrl),
+                    TypeItemSet(categorizedCards1.type),
+                    CardItemSet(card2.id, card2.imageUrl),
+                    CardItemSet(card3.id, card3.imageUrl),
+                    CardItemSet(card4.id, card4.imageUrl)
                 ), null, 2
             )
         }
