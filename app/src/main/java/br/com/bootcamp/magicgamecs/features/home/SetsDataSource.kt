@@ -47,7 +47,8 @@ class SetsDataSource(
             try {
                 paginatedLoadState.postValue(State.Loading)
                 val result = loadPage(params.key)
-                callback.onResult(result, params.key + 1)
+                val nextPage = (params.key + 1).takeIf { result.isNotEmpty() }
+                callback.onResult(result, nextPage)
                 paginatedLoadState.postValue(State.Loaded)
             } catch (e: Exception) {
                 paginatedLoadState.postValue(State.Failed(e))
@@ -59,10 +60,10 @@ class SetsDataSource(
     }
 
     private suspend fun loadPage(page: Int): List<ItemSet> =
-        loadMagicSetsByPage(LoadMagicSetsByPage.Params(page))
+        listOf(loadMagicSetsByPage(LoadMagicSetsByPage.Params(page)))
             .flatMap { set ->
                 listOf(EditionItemSet(set.name)) +
-                        set.cardTypes.flatMap { type ->
+                        set.typedCards.flatMap { type ->
                             listOf(TypeItemSet(type.type)) +
                                     type.cards.map { card -> CardItemSet(card) }
                         }

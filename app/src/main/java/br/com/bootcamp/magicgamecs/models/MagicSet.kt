@@ -3,5 +3,5 @@ package br.com.bootcamp.magicgamecs.models
 data class MagicSet(
     val code: String,
     val name: String,
-    val cardTypes: List<CardType>
+    val typedCards: MutableList<CardType> = mutableListOf()
 )

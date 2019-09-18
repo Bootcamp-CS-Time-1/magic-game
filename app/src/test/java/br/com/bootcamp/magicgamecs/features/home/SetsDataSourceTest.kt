@@ -1,7 +1,9 @@
 package br.com.bootcamp.magicgamecs.features.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import androidx.paging.PageKeyedDataSource.LoadInitialParams
 import br.com.bootcamp.magicgamecs.models.Card
 import br.com.bootcamp.magicgamecs.models.CardType
 import br.com.bootcamp.magicgamecs.domain.LoadMagicSetsByPage
@@ -21,26 +23,28 @@ class SetsDataSourceTest {
     @MockK
     lateinit var loadMagicSetsByPage: LoadMagicSetsByPage
 
-    private lateinit var setsDataSource: SetsDataSource
-
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        setsDataSource = SetsDataSource(loadMagicSetsByPage, dispatcher)
     }
 
     @Test
-    fun loadInitial() {
+    fun givenMagicSets_whenInitialLoad_shouldTransformToItemSet() {
         // Arrange
+        val initialLoadState = spyk<MutableLiveData<State>>()
+        val paginatedLoadState = spyk<MutableLiveData<State>>()
+        val setsDataSource =
+            SetsDataSource(loadMagicSetsByPage, initialLoadState, paginatedLoadState, dispatcher)
+
         val card0 = Card("1", "image1")
         val card1 = Card("2", "image2")
         val card2 = Card("3", "image3")
         val card3 = Card("4", "image4")
         val card4 = Card("5", "image5")
 
-        val categorizedCards0 =
+        val typedCard0 =
             CardType("typeA", listOf(card0, card1))
-        val categorizedCards1 = CardType(
+        val typedCard1 = CardType(
             "typeB",
             listOf(card2, card3, card4)
         )
@@ -48,7 +52,29 @@ class SetsDataSourceTest {
         val magicSet0 = MagicSet(
             "a",
             "name",
-            listOf(categorizedCards0, categorizedCards1)
+            listOf(typedCard0, typedCard1)
+        )
+
+        /*
+        Edtion: List
+            - code
+            - name
+            - types: List
+                - name
+                - cards: List
+                    - id
+                    - image
+         */
+
+        val transformed = listOf(
+            EditionItemSet(magicSet0.name),
+            TypeItemSet(typedCard0.type),
+            CardItemSet(card0),
+            CardItemSet(card1),
+            TypeItemSet(typedCard1.type),
+            CardItemSet(card2),
+            CardItemSet(card3),
+            CardItemSet(card4)
         )
 
         coEvery {
@@ -58,22 +84,41 @@ class SetsDataSourceTest {
         val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
 
         // Act
-        setsDataSource.loadInitial(PageKeyedDataSource.LoadInitialParams(1, true), callback)
+        setsDataSource.loadInitial(LoadInitialParams(1, true), callback)
 
-        // Verify
+        // Assert
         coVerify {
-            callback.onResult(
-                listOf(
-                    EditionItemSet(magicSet0.name),
-                    TypeItemSet(categorizedCards0.type),
-                    CardItemSet(card0.id, card0.imageUrl),
-                    CardItemSet(card1.id, card1.imageUrl),
-                    TypeItemSet(categorizedCards1.type),
-                    CardItemSet(card2.id, card2.imageUrl),
-                    CardItemSet(card3.id, card3.imageUrl),
-                    CardItemSet(card4.id, card4.imageUrl)
-                ), null, 2
-            )
+            callback.onResult(transformed, null, 2)
+        }
+    }
+
+    @Test
+    fun givenInitialLoadState_whenInitialLoad_shouldNotifyLoad() {
+        // Arrange
+        val initialLoadState = spyk<MutableLiveData<State>>()
+        val paginatedLoadState = spyk<MutableLiveData<State>>()
+        val setsDataSource =
+            SetsDataSource(loadMagicSetsByPage, initialLoadState, paginatedLoadState, dispatcher)
+
+        val magicSet0 = MagicSet(
+            "a",
+            "name",
+            listOf()
+        )
+
+        coEvery {
+            loadMagicSetsByPage.invoke(LoadMagicSetsByPage.Params(1))
+        } returns listOf(magicSet0)
+
+        val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
+
+        // Act
+        setsDataSource.loadInitial(LoadInitialParams(1, true), callback)
+
+        // Assert
+        verify {
+            initialLoadState.setValue(State.Loading)
+            initialLoadState.setValue(State.Loaded)
         }
     }
 
