@@ -3,7 +3,6 @@
 buildscript {
     ext.kotlin_version = '1.3.50'
 
-    ext.retrofit_version = '2.4.0'
     repositories {
         google()
         jcenter()
@@ -21,7 +20,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
@@ -32,4 +30,7 @@ task clean(type: Delete) {
 ext {
     koin_version = '2.0.1'
     coroutines_version = '1.3.0-M2'
+    retrofit_version = '2.6.1'
+    glide_version = '4.9.0'
+    shimmer_version = '0.4.0'
 }
