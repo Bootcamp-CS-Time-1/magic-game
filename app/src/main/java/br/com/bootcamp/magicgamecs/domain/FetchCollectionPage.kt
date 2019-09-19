@@ -13,14 +13,15 @@ class FetchCollectionPage(
 
     override suspend fun run(params: Params): PageResult<List<Collection>> {
         val magicSets = getSets()
-        val magicSet = magicSets[params.page]
 
-        if (magicSet.typedCards.isEmpty()) {
-            val grouped = repository.getAllCardsBySetCode(magicSet.code)
-                .groupBy { it.type }
-                .map { CardType(it.key, it.value) }
+        magicSets[params.page].run {
+            if (typedCards.isEmpty()) {
+                val grouped = repository.getAllCardsBySetCode(code)
+                    .groupBy { it.type }
+                    .map { CardType(it.key, it.value) }
 
-            magicSet.typedCards.addAll(grouped)
+                typedCards.addAll(grouped)
+            }
         }
 
         return PageResult(

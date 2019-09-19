@@ -15,12 +15,17 @@ import kotlinx.android.synthetic.main.item_main_activity_card.view.*
 import kotlinx.android.synthetic.main.item_main_activity_collection.view.*
 import kotlinx.android.synthetic.main.item_main_activity_type.view.*
 
-
-typealias OnCardClickListener = (position: Int, card: Card) -> Unit
-
 class CollectionAdapter(
-    private val onCardClickListener: OnCardClickListener? = null
+    private val listener: UserInteraction? = null
 ) : ListAdapter<CollectionItem, ViewHolder<CollectionItem>>(DIFF_CALLBACK) {
+
+    fun submitListWithError(list: List<CollectionItem>, reason: Throwable) {
+        submitList(list + Failed(reason))
+    }
+
+    fun submitListWithLoading(list: List<CollectionItem>) {
+        submitList(list + Placeholder)
+    }
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateViewHolder(
@@ -53,14 +58,12 @@ class CollectionAdapter(
         else -> error("Item type not supported")
     }
 
-    private val now = System.currentTimeMillis()
-
     inner class CardViewHolder(view: View) : ViewHolder<CardItem>(view) {
         init {
             itemView.imageView_card_item.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val card = getItem(adapterPosition) as CardItem
-                    onCardClickListener?.invoke(adapterPosition, card.content)
+                    listener?.onCardClick(adapterPosition, card.content)
                 }
             }
         }
@@ -97,6 +100,8 @@ class CollectionAdapter(
         }
     }
 
+    class ErrorViewHolder(view: View) : ViewHolder<Placeholder>(view)
+
     class PlaceholderViewHolder(view: View) : ViewHolder<Placeholder>(view)
 
     companion object {
@@ -116,6 +121,11 @@ class CollectionAdapter(
     inner class SpanSizeLookup : GridLayoutManager.SpanSizeLookup() {
         override fun getSpanSize(position: Int) =
             getItem(position)?.spanSize ?: 1
+    }
+
+    interface UserInteraction {
+        fun onCardClick(position: Int, card: Card)
+        fun onRetryClick()
     }
 
 }

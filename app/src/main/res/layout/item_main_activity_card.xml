@@ -12,12 +12,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintDimensionRatio="0.72"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shimmer_auto_start="true"
-        app:shimmer_duration="2000"
-        app:shimmer_repeat_mode="restart">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView_card_item"
@@ -42,4 +38,13 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Card name" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="@id/shimmer_card"
+        app:layout_constraintEnd_toEndOf="@id/shimmer_card"
+        app:layout_constraintStart_toStartOf="@id/shimmer_card"
+        app:layout_constraintTop_toTopOf="@id/shimmer_card" />
 </androidx.constraintlayout.widget.ConstraintLayout>

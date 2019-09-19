@@ -11,3 +11,5 @@ data class CardTypeItem(val setCode: String, val text: String) : CollectionItem(
 data class CardItem(val content: Card) : CollectionItem(1)
 
 object Placeholder : CollectionItem(3)
+
+data class Failed(val reason: Throwable) : CollectionItem(3)
