@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showError(error: Throwable) {
         error.printStackTrace()
-        // TODO
+        tela_erro.show()
     }
 
     private fun navigateToCard(position: Int, card: Card) {
