@@ -1,6 +1,5 @@
 package br.com.bootcamp.magicgamecs.features.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,37 +15,27 @@ typealias CollectionsState = ViewState<List<CollectionItem>>
 
 class CollectionViewModel(
     private val fetchCollectionPage: FetchCollectionPage,
-    initialState: CollectionsState = ViewState.FirstLaunch
+    initialState: CollectionsState = ViewState.FirstLaunch,
+    _nextPage: Int? = null
 ) : ViewModel() {
 
-    private val collections = MutableLiveData<CollectionsState>()
+    val collections = MutableLiveData<CollectionsState>()
         .apply { value = initialState }
 
-    private var nextPage: Int? = null
-
-    fun getCollections(): LiveData<CollectionsState> {
-        loadInitial()
-        return collections
-    }
+    private var nextPage: Int? = _nextPage
 
     fun reload() {
         if (collections.value is Loading.FromEmpty) return
-
-        viewModelScope.launch {
-            try {
-                collections.postValue(Loading.FromEmpty)
-                val result = fetchPage()
-                collections.postValue(Success(result))
-            } catch (e: Throwable) {
-                collections.postValue(ViewState.Failed.FromEmpty(e))
-            }
-        }
+        load()
     }
 
     fun loadInitial() {
         if (collections.value !is ViewState.FirstLaunch && collections.value !is ViewState.Failed.FromEmpty)
             return
+        load()
+    }
 
+    private fun load() {
         viewModelScope.launch {
             try {
                 collections.postValue(Loading.FromEmpty)

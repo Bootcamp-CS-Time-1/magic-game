@@ -9,9 +9,9 @@ sealed class ViewState<out T> {
         data class FromPrevious<T>(val previous: T) : Loading<T>()
     }
 
-    sealed class Failed<T>(val reason: Throwable) : ViewState<T>() {
-        class FromEmpty(reason: Throwable) : Failed<Nothing>(reason)
-        class FromPrevious<T>(reason: Throwable, val previous: T) : Failed<T>(reason)
+    sealed class Failed<T> : ViewState<T>() {
+        data class FromEmpty(val reason: Throwable) : Failed<Nothing>()
+        data class FromPrevious<T>(val reason: Throwable, val previous: T) : Failed<T>()
     }
 
     data class Success<T>(val value: T) : ViewState<T>()
