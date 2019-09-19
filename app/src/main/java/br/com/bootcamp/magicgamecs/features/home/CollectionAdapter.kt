@@ -1,11 +1,8 @@
 package br.com.bootcamp.magicgamecs.features.home
 
-import android.animation.ValueAnimator
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -14,12 +11,6 @@ import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.base.ViewHolder
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.facebook.shimmer.Shimmer
-import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.item_main_activity_card.view.*
 import kotlinx.android.synthetic.main.item_main_activity_collection.view.*
 import kotlinx.android.synthetic.main.item_main_activity_type.view.*
@@ -78,11 +69,11 @@ class CollectionAdapter(
             itemView.run {
                 val card = item.content
                 Glide.with(context)
-                    .load(card.imageUrl + "&time=$now")
+                    .load(card.imageUrl)
                     .placeholder(R.drawable.placeholder_card)
                     .error(R.drawable.placeholder_card)
                     .addListener(
-                        CardRequestListener(
+                        CardImageRequestListener(
                             card,
                             shimmer_card,
                             text_card_placeholder
@@ -127,54 +118,4 @@ class CollectionAdapter(
             getItem(position)?.spanSize ?: 1
     }
 
-    class CardRequestListener(
-        private val card: Card,
-        private val shimmer: ShimmerFrameLayout,
-        private val textPlaceholder: TextView
-    ) : RequestListener<Drawable> {
-
-        init {
-            textPlaceholder.text = ""
-            startShimmer()
-        }
-
-        override fun onLoadFailed(
-            e: GlideException?,
-            model: Any?,
-            target: Target<Drawable>?,
-            isFirstResource: Boolean
-        ): Boolean {
-            textPlaceholder.text = card.name
-            stopShimmer()
-            return false
-        }
-
-        override fun onResourceReady(
-            resource: Drawable?,
-            model: Any?,
-            target: Target<Drawable>?,
-            dataSource: DataSource?,
-            isFirstResource: Boolean
-        ): Boolean {
-            stopShimmer()
-            return false
-        }
-
-        private fun startShimmer() {
-            shimmer.setShimmer(
-                Shimmer.AlphaHighlightBuilder()
-                    .setAutoStart(true)
-                    .setDuration(2000)
-                    .setRepeatMode(ValueAnimator.RESTART)
-                    .build()
-            )
-        }
-
-        private fun stopShimmer() {
-            shimmer.stopShimmer()
-            shimmer.setShimmer(null)
-            shimmer.clearAnimation()
-        }
-
-    }
 }

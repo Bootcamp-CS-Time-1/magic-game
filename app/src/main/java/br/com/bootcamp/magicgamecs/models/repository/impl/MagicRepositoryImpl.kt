@@ -12,7 +12,7 @@ class MagicRepositoryImpl(private val webServices: WebServices) : MagicRepositor
 
     override suspend fun getAllCardsBySetCode(setCode: String): List<Card> {
         val allCards = mutableListOf<Card>()
-        val limit = 101
+        val limit = 100
         var page = 0
 
         do {
