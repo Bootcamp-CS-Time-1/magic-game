@@ -16,10 +16,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val setsViewModel by viewModel<SetsViewModel>()
+    private val setsViewModel by viewModel<CollectionViewModel>()
 
-    private val setsAdapter by lazy {
-        SetsAdapter()
+    private val collectionAdapter by lazy {
+        CollectionAdapter(::navigateToCard)
     }
 
     private val RecyclerView.gridLayoutManager: GridLayoutManager
@@ -48,20 +48,21 @@ class MainActivity : AppCompatActivity() {
             }
             is State.Failed -> {
                 progressBar.gone()
-                state.error.printStackTrace()
-                // TODO show error state
+                showError(state.error)
             }
         }
     }
 
     private fun setUpItemList() {
         recyclerView_main.setUp()
-        setsAdapter.setOnCardClickListener { position, card ->
-            navigateToCard(position, card)
-        }
         setsViewModel.getItemsSet().observe(this, Observer {
-            setsAdapter.submitList(it)
+            collectionAdapter.submitList(it)
         })
+    }
+
+    private fun showError(error: Throwable) {
+        error.printStackTrace()
+        // TODO
     }
 
     private fun navigateToCard(position: Int, card: Card) {
@@ -69,8 +70,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun RecyclerView.setUp() {
-        adapter = setsAdapter
-        gridLayoutManager.spanSizeLookup = setsAdapter.SpanSizeLookup()
+        adapter = collectionAdapter
+        gridLayoutManager.spanSizeLookup = collectionAdapter.SpanSizeLookup()
         addOnScrollListener(
             EndlessRecyclerViewScrollListener(layoutManager!!) {
                 setsViewModel.fetchMoreItems()

@@ -32,4 +32,5 @@ ext {
     coroutines_version = '1.3.0-M2'
     retrofit_version = '2.6.1'
     glide_version = '4.9.0'
+    shimmer_version = '0.4.0'
 }

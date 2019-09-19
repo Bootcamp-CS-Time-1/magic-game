@@ -4,35 +4,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.bootcamp.magicgamecs.domain.FetchMagicSetsPage
+import br.com.bootcamp.magicgamecs.domain.FetchCollectionPage
 import br.com.bootcamp.magicgamecs.models.pojo.State
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class SetsViewModel(
-    private val fetchMagicSetsPage: FetchMagicSetsPage
+class CollectionViewModel(
+    private val fetchCollectionPage: FetchCollectionPage
 ) : ViewModel() {
-    private val itemsSet = MutableLiveData<List<ItemSet>>()
+
+    private val collections = MutableLiveData<List<CollectionItem>>()
 
     val initialLoadState = MutableLiveData<State>()
     val paginatedLoadState = MutableLiveData<State>()
 
     private var nextPage: Int? = null
 
-    fun getItemsSet(): LiveData<List<ItemSet>> {
+    fun getItemsSet(): LiveData<List<CollectionItem>> {
         loadInitial()
-        return itemsSet
+        return collections
     }
 
     private fun loadInitial() {
-        if (itemsSet.value?.isNotEmpty() == false || initialLoadState.value == State.Loaded)
+        if (collections.value?.isNotEmpty() == false || initialLoadState.value == State.Loaded)
             return
         viewModelScope.launch {
             try {
                 initialLoadState.postValue(State.Loading)
                 val result = fetchPage()
-                itemsSet.postValue(result)
+                collections.postValue(result)
                 initialLoadState.postValue(State.Loaded)
             } catch (e: Throwable) {
                 initialLoadState.postValue(State.Failed(e))
@@ -48,7 +49,7 @@ class SetsViewModel(
             try {
                 paginatedLoadState.postValue(State.Loading)
                 val result = fetchPage(nextPage)
-                itemsSet.postValue(result)
+                collections.postValue(result)
                 paginatedLoadState.postValue(State.Loaded)
             } catch (e: Throwable) {
                 paginatedLoadState.postValue(State.Failed(e))
@@ -56,15 +57,15 @@ class SetsViewModel(
         }
     }
 
-    private suspend fun fetchPage(page: Int = 0): List<ItemSet> {
-        val result = fetchMagicSetsPage(FetchMagicSetsPage.Params(page))
+    private suspend fun fetchPage(page: Int = 0): List<CollectionItem> {
+        val result = fetchCollectionPage(FetchCollectionPage.Params(page))
         this.nextPage = result.nextPage
         return result.data
             .flatMap { set ->
-                listOf(EditionItemSet(set.name)) +
+                listOf(NameCollectionItem(set.name)) +
                         set.typedCards.flatMap { type ->
-                            listOf(TypeItemSet(set.code, type.type)) +
-                                    type.cards.map { card -> CardItemSet(card) }
+                            listOf(CardTypeItem(set.code, type.type)) +
+                                    type.cards.map { card -> CardItem(card) }
                         }
             }.let {
                 if (result.nextPage != null) it + Placeholder

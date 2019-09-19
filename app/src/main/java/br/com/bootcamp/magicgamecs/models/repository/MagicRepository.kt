@@ -1,10 +1,10 @@
 package br.com.bootcamp.magicgamecs.models.repository
 
 import br.com.bootcamp.magicgamecs.models.pojo.Card
-import br.com.bootcamp.magicgamecs.models.pojo.MagicSet
+import br.com.bootcamp.magicgamecs.models.pojo.Collection
 
 interface MagicRepository {
-    suspend fun getSets(): List<MagicSet>
+    suspend fun getSets(): List<Collection>
 
-    suspend fun getCards(setCode: String, page: Int, limit: Int): List<Card>
+    suspend fun getAllCardsBySetCode(setCode: String): List<Card>
 }

@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PageKeyedDataSource.LoadInitialParams
 import br.com.bootcamp.magicgamecs.models.pojo.CardType
-import br.com.bootcamp.magicgamecs.domain.FetchMagicSetsPage
+import br.com.bootcamp.magicgamecs.domain.FetchCollectionPage
 import br.com.bootcamp.magicgamecs.models.pojo.Card
-import br.com.bootcamp.magicgamecs.models.pojo.MagicSet
+import br.com.bootcamp.magicgamecs.models.pojo.Collection
 import br.com.bootcamp.magicgamecs.models.pojo.State
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -22,7 +22,7 @@ class SetsDataSourceTest {
     private val dispatcher = Dispatchers.Unconfined
 
     @MockK
-    lateinit var fetchMagicSetsPage: FetchMagicSetsPage
+    lateinit var fetchCollectionPage: FetchCollectionPage
 
     @Before
     fun setUp() {
@@ -35,7 +35,7 @@ class SetsDataSourceTest {
         val initialLoadState = spyk<MutableLiveData<State>>()
         val paginatedLoadState = spyk<MutableLiveData<State>>()
         val setsDataSource =
-            SetsDataSource(fetchMagicSetsPage, initialLoadState, paginatedLoadState, dispatcher)
+            SetsDataSource(fetchCollectionPage, initialLoadState, paginatedLoadState, dispatcher)
 
         val card0 = Card("1", "image1")
         val card1 = Card("2", "image2")
@@ -50,7 +50,7 @@ class SetsDataSourceTest {
             listOf(card2, card3, card4)
         )
 
-        val magicSet0 = MagicSet(
+        val magicSet0 = Collection(
             "a",
             "name",
             mutableListOf(typedCard0, typedCard1)
@@ -68,21 +68,21 @@ class SetsDataSourceTest {
          */
 
         val transformed = listOf(
-            EditionItemSet(magicSet0.name),
-            TypeItemSet(typedCard0.type),
-            CardItemSet(card0),
-            CardItemSet(card1),
-            TypeItemSet(typedCard1.type),
-            CardItemSet(card2),
-            CardItemSet(card3),
-            CardItemSet(card4)
+            NameCollectionItem(magicSet0.name),
+            CardTypeItem(typedCard0.type),
+            CardItem(card0),
+            CardItem(card1),
+            CardTypeItem(typedCard1.type),
+            CardItem(card2),
+            CardItem(card3),
+            CardItem(card4)
         )
 
         coEvery {
-            fetchMagicSetsPage.invoke(FetchMagicSetsPage.Params(1))
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(1))
         } returns magicSet0
 
-        val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
+        val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, CollectionItem>>()
 
         // Act
         setsDataSource.loadInitial(LoadInitialParams(1, true), callback)
@@ -99,19 +99,19 @@ class SetsDataSourceTest {
         val initialLoadState = spyk<MutableLiveData<State>>()
         val paginatedLoadState = spyk<MutableLiveData<State>>()
         val setsDataSource =
-            SetsDataSource(fetchMagicSetsPage, initialLoadState, paginatedLoadState, dispatcher)
+            SetsDataSource(fetchCollectionPage, initialLoadState, paginatedLoadState, dispatcher)
 
-        val magicSet0 = MagicSet(
+        val magicSet0 = Collection(
             "a",
             "name",
             mutableListOf()
         )
 
         coEvery {
-            fetchMagicSetsPage.invoke(FetchMagicSetsPage.Params(1))
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(1))
         } returns magicSet0
 
-        val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, ItemSet>>()
+        val callback = spyk<PageKeyedDataSource.LoadInitialCallback<Int, CollectionItem>>()
 
         // Act
         setsDataSource.loadInitial(LoadInitialParams(1, true), callback)

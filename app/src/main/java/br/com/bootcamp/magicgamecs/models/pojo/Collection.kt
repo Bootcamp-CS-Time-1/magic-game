@@ -2,7 +2,7 @@ package br.com.bootcamp.magicgamecs.models.pojo
 
 import com.google.gson.annotations.Expose
 
-data class MagicSet(
+data class Collection(
     val code: String,
     val name: String,
     @Expose(deserialize = false)

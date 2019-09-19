@@ -1,7 +1,7 @@
 package br.com.bootcamp.magicgamecs.core.di.modules
 
-import br.com.bootcamp.magicgamecs.domain.FetchMagicSetsPage
-import br.com.bootcamp.magicgamecs.features.home.SetsViewModel
+import br.com.bootcamp.magicgamecs.domain.FetchCollectionPage
+import br.com.bootcamp.magicgamecs.features.home.CollectionViewModel
 import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
 import br.com.bootcamp.magicgamecs.models.repository.impl.MagicRepositoryImpl
 import org.koin.dsl.module
@@ -53,11 +53,11 @@ import org.koin.dsl.module
  */
 val appModule = module {
     factory {
-        SetsViewModel(get())
+        CollectionViewModel(get())
     }
 
     factory {
-        FetchMagicSetsPage(get())
+        FetchCollectionPage(get())
     }
 
     factory<MagicRepository> {
