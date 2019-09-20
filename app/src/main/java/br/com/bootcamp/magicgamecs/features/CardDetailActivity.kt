@@ -23,6 +23,10 @@ class CardDetailActivity : AppCompatActivity() {
             //.transform(RoundedCorners(10))
             .into(imageView_card_detail)
 
+        imageView_close_detail.setOnClickListener {
+            finish()
+        }
+
 //        val imageCarousel : CarouselPicker = findViewById(R.id.carousel)
 //
 //        val imageItems = ArrayList<CarouselPicker.PickerItem>()
