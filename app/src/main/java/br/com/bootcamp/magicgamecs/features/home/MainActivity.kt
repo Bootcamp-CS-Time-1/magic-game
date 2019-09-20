@@ -12,6 +12,7 @@ import br.com.bootcamp.magicgamecs.core.listeners.EndlessRecyclerViewScrollListe
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.State
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.status_error.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        btTentarNovamente.setOnClickListener {
+            setUpItemList()
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -54,6 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpItemList() {
+        tela_erro.gone()
         recyclerView_main.setUp()
         setsViewModel.getItemsSet().observe(this, Observer {
             collectionAdapter.submitList(it)
@@ -62,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showError(error: Throwable) {
         error.printStackTrace()
+        tvDescricao.text = error.message
         tela_erro.show()
     }
 
