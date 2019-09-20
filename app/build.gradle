@@ -67,4 +67,6 @@ dependencies {
 
     //MaterialDesign
     implementation 'com.google.android.material:material:1.0.0'
+
+    implementation 'com.github.GoodieBag:CarouselPicker:v1.1'
 }

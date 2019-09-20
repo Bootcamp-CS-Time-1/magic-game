@@ -1,5 +1,6 @@
 package br.com.bootcamp.magicgamecs.features.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -9,6 +10,7 @@ import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.ext.gone
 import br.com.bootcamp.magicgamecs.core.ext.show
 import br.com.bootcamp.magicgamecs.core.listeners.EndlessRecyclerViewScrollListener
+import br.com.bootcamp.magicgamecs.features.CardDetailActivity
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.State
 import kotlinx.android.synthetic.main.activity_main.*
@@ -66,7 +68,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToCard(position: Int, card: Card) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, CardDetailActivity::class.java)
+        intent.putExtra("CARD", card)
+        startActivity(intent)
     }
 
     private fun RecyclerView.setUp() {

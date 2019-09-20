@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Magic Game CS</string>
+    <string name="add_card_to_deck">add card to deck</string>
 </resources>
