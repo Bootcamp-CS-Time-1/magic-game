@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 data class Card(
     val id: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val type: String = "",
     val name: String = ""
 ) : Parcelable {

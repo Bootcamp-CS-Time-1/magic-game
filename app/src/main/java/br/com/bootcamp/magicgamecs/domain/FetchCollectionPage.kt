@@ -28,7 +28,7 @@ class FetchCollectionPage(
             // carrega os dados a partir da primeira pagina ate a solicitada
             data = magicSets.slice(0..params.page),
             total = sets.size,
-            // passar nulo caso a proxima pagina nao exista
+            // passa nulo quando a proxima pagina nao existe
             nextPage = params.page.plus(1).takeIf { it < sets.size }
         )
     }

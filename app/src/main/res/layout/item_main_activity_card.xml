@@ -3,16 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:importantForAccessibility="no">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_card"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="@drawable/bg_selectable_item"
+        android:importantForAccessibility="yes"
         app:layout_constraintDimensionRatio="0.72"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -20,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
+            android:importantForAccessibility="no"
             android:scaleType="centerCrop"
             tools:src="@drawable/fundo" />
     </com.facebook.shimmer.ShimmerFrameLayout>
@@ -29,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:importantForAccessibility="no"
         android:maxLines="2"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
@@ -38,13 +47,4 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Card name" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        app:layout_constraintBottom_toBottomOf="@id/shimmer_card"
-        app:layout_constraintEnd_toEndOf="@id/shimmer_card"
-        app:layout_constraintStart_toStartOf="@id/shimmer_card"
-        app:layout_constraintTop_toTopOf="@id/shimmer_card" />
 </androidx.constraintlayout.widget.ConstraintLayout>
