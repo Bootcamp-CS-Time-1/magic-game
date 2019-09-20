@@ -14,6 +14,10 @@ class FetchCollectionPage(
     override suspend fun run(params: Params): PageResult<List<Collection>> {
         val magicSets = getSets()
 
+        require(params.page >= 0 && params.page < magicSets.size) {
+            "Requested page is invalid (${params.page})"
+        }
+
         magicSets[params.page].run {
             if (typedCards.isEmpty()) {
                 val grouped = repository.getAllCardsBySetCode(code)
@@ -35,7 +39,7 @@ class FetchCollectionPage(
 
     private suspend fun getSets(): List<Collection> {
         if (sets.isEmpty()) {
-            sets.addAll(repository.getSets())
+            sets.addAll(repository.getAllSets())
         }
         return sets
     }

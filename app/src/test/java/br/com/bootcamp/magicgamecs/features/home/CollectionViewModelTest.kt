@@ -74,10 +74,10 @@ class CollectionViewModelTest {
         collectionViewModel.loadInitial()
 
         // Assert
-        coVerify {
-            fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
+        coVerifySequence {
             observer.onChanged(initialState)
             observer.onChanged(ViewState.Loading.FromEmpty)
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
             observer.onChanged(ViewState.Failed.FromEmpty(error))
         }
         confirmVerified(observer, fetchCollectionPage)
@@ -104,10 +104,10 @@ class CollectionViewModelTest {
         collectionViewModel.fetchMoreItems()
 
         // Assert
-        coVerify {
-            fetchCollectionPage.invoke(FetchCollectionPage.Params(nextPage))
+        coVerifySequence {
             observer.onChanged(initialState)
             observer.onChanged(ViewState.Loading.FromPrevious(initialState.value))
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(nextPage))
             observer.onChanged(ViewState.Failed.FromPrevious(error, listOf<CollectionItem>()))
         }
         confirmVerified(observer, fetchCollectionPage)
@@ -216,10 +216,10 @@ class CollectionViewModelTest {
         collectionViewModel.loadInitial()
 
         // Assert
-        coVerify {
-            fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
+        coVerifySequence {
             observer.onChanged(ViewState.FirstLaunch)
             observer.onChanged(ViewState.Loading.FromEmpty)
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
             observer.onChanged(ViewState.Success(transformed))
         }
         confirmVerified(observer, fetchCollectionPage)
@@ -290,10 +290,10 @@ class CollectionViewModelTest {
         collectionViewModel.fetchMoreItems()
 
         // Assert
-        coVerify {
-            fetchCollectionPage.invoke(FetchCollectionPage.Params(1))
+        coVerifySequence {
             observer.onChanged(ViewState.Success(transformed0))
             observer.onChanged(ViewState.Loading.FromPrevious(transformed0))
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(1))
             observer.onChanged(ViewState.Success(transformed1))
         }
         confirmVerified(observer, fetchCollectionPage)
@@ -315,10 +315,38 @@ class CollectionViewModelTest {
         collectionViewModel.reload()
 
         // Assert
-        coVerify {
-            fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
+        coVerifySequence {
             observer.onChanged(ViewState.FirstLaunch)
             observer.onChanged(ViewState.Loading.FromEmpty)
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
+            observer.onChanged(ViewState.Success(listOf<CollectionItem>()))
+        }
+        confirmVerified(observer, fetchCollectionPage)
+    }
+
+    @Test
+    fun givenAfterFailed_whenFetchMore_shouldSuccess() {
+        // Arrange
+        val error = Throwable()
+        val initialState = ViewState.Failed.FromPrevious(error, listOf<CollectionItem>())
+        val nextPage = 1
+        val collectionViewModel = CollectionViewModel(fetchCollectionPage, initialState, nextPage)
+
+        val observer = spyk<Observer<ViewState<*>>>()
+        collectionViewModel.collections.observeForever(observer)
+
+        coEvery {
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(nextPage))
+        } returns PageResult(listOf(), 1, null)
+
+        // Act
+        collectionViewModel.fetchMoreItems()
+
+        // Assert
+        coVerifySequence {
+            observer.onChanged(initialState)
+            observer.onChanged(ViewState.Loading.FromPrevious(initialState.previous))
+            fetchCollectionPage.invoke(FetchCollectionPage.Params(nextPage))
             observer.onChanged(ViewState.Success(listOf<CollectionItem>()))
         }
         confirmVerified(observer, fetchCollectionPage)

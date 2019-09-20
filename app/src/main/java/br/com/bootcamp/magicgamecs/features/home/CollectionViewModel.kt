@@ -49,7 +49,9 @@ class CollectionViewModel(
 
     fun fetchMoreItems() {
         val nextPage = this.nextPage ?: return
-        val previous = (collections.value as? Success)?.value ?: return
+        val previous = (collections.value as? Success)?.value
+            ?: (collections.value as? ViewState.Failed.FromPrevious)?.previous
+            ?: return
 
         viewModelScope.launch {
             try {
