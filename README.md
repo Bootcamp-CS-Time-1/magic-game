@@ -44,10 +44,10 @@ A lista de bibliotecas utilizadas para o desenvolvimento foram:
 - [x] Listar as cartas
 - [x] Agrupar por Edição e Tipos
 - [x] Detalhamento de uma única carta
-- [] Pesquisar por carta
-- [] favoritar carta
-- [] retirar da lista de favoritos
-- [] listar favoritos
+- [ ] Pesquisar por carta
+- [ ] favoritar carta
+- [ ] retirar da lista de favoritos
+- [ ] listar favoritos
 
 ### Imagens 
 
