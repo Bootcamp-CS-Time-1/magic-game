@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="description_collection">Coleção: %s</string>
+    <string name="description_card_type">Cartas do tipo: %s</string>
+    <string name="action_retry">Tentar novamente</string>
+    <string name="action_load_more">Carregar mais</string>
+    <string name="add_card_to_deck">adicionar carta ao deck</string>
+</resources>

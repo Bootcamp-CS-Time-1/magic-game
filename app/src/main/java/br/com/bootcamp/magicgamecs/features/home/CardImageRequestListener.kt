@@ -48,7 +48,7 @@ class CardImageRequestListener(
         shimmer.setShimmer(
             Shimmer.AlphaHighlightBuilder()
                 .setAutoStart(true)
-                .setDuration(2000)
+                .setDuration(1300)
                 .setRepeatMode(ValueAnimator.RESTART)
                 .build()
         )
