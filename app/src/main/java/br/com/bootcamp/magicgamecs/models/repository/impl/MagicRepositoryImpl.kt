@@ -22,7 +22,7 @@ class MagicRepositoryImpl(
 
         var page = 0
         val limit = 100
-        val orderBy = "type"
+        val orderBy = "releaseDate"
 
         do {
             val result = webServices.listCard(setCode, ++page, limit, orderBy).cards
