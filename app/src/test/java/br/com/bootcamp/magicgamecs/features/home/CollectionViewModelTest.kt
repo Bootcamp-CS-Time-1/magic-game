@@ -46,7 +46,7 @@ class CollectionViewModelTest {
         val observer = spyk<Observer<ViewState<*>>>()
 
         // Act
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         // Assert
         verify {
@@ -68,7 +68,7 @@ class CollectionViewModelTest {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
         } throws error
 
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         // Act
         collectionViewModel.loadInitial()
@@ -98,7 +98,7 @@ class CollectionViewModelTest {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(nextPage))
         } throws error
 
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         // Act
         collectionViewModel.fetchMoreItems()
@@ -120,7 +120,7 @@ class CollectionViewModelTest {
         val collectionViewModel = CollectionViewModel(fetchCollectionPage, initialState, 1)
 
         val observer = spyk<Observer<ViewState<*>>>()
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         // Act
         collectionViewModel.loadInitial()
@@ -139,7 +139,7 @@ class CollectionViewModelTest {
         val collectionViewModel = CollectionViewModel(fetchCollectionPage, initialState, 1)
 
         val observer = spyk<Observer<ViewState<*>>>()
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         // Act
         collectionViewModel.fetchMoreItems()
@@ -158,7 +158,7 @@ class CollectionViewModelTest {
         val collectionViewModel = CollectionViewModel(fetchCollectionPage, initialState, null)
 
         val observer = spyk<Observer<ViewState<*>>>()
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         // Act
         collectionViewModel.fetchMoreItems()
@@ -206,7 +206,7 @@ class CollectionViewModelTest {
         val collectionViewModel = CollectionViewModel(fetchCollectionPage)
 
         val observer = spyk<Observer<ViewState<*>>>()
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
@@ -280,7 +280,7 @@ class CollectionViewModelTest {
             CollectionViewModel(fetchCollectionPage, ViewState.Success(transformed0), 1)
 
         val observer = spyk<Observer<ViewState<*>>>()
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(1))
@@ -305,7 +305,7 @@ class CollectionViewModelTest {
         val collectionViewModel = CollectionViewModel(fetchCollectionPage)
 
         val observer = spyk<Observer<ViewState<*>>>()
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
@@ -333,7 +333,7 @@ class CollectionViewModelTest {
         val collectionViewModel = CollectionViewModel(fetchCollectionPage, initialState, nextPage)
 
         val observer = spyk<Observer<ViewState<*>>>()
-        collectionViewModel.collections.observeForever(observer)
+        collectionViewModel.collectionsState.observeForever(observer)
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(nextPage))
