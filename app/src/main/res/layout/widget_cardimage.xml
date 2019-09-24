@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shimmer_card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:importantForAccessibility="yes">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView_card_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/fundo" />
+
+    <TextView
+        android:id="@+id/text_card_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:ellipsize="end"
+        android:importantForAccessibility="no"
+        android:maxLines="2"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        tools:text="Card name" />
+</com.facebook.shimmer.ShimmerFrameLayout>

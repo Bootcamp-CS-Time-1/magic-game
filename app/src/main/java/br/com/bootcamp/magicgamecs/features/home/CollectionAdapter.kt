@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.base.ViewHolder
+import br.com.bootcamp.magicgamecs.core.widgets.CardImageView
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_activity_card.view.*
@@ -40,7 +41,7 @@ class CollectionAdapter(
             .inflate(layoutRes, parent, false)
 
         return when (layoutRes) {
-            VIEW_TYPE_CARD -> CardViewHolder(view)
+            VIEW_TYPE_CARD -> CardViewHolder(view, listener)
             VIEW_TYPE_SUBTITLE -> TypeViewHolder(view)
             VIEW_TYPE_TITLE -> CollectionViewHolder(view)
             VIEW_TYPE_PLACEHOLDER -> PlaceholderViewHolder(view)
@@ -68,34 +69,18 @@ class CollectionAdapter(
     // region Inner classes
 
     // region ViewHolders
-    inner class CardViewHolder(view: View) : ViewHolder<CardItem>(view) {
+    class CardViewHolder(view: View, private val listener: UserInteraction?) :
+        ViewHolder<CardItem>(view) {
         init {
-            itemView.shimmer_card.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val card = getItem(adapterPosition) as CardItem
-                    listener?.onCardClick(adapterPosition, card.content)
+            itemView.card_image.setOnClickListener { v ->
+                (v as? CardImageView)?.card?.let { card ->
+                    listener?.onCardClick(card)
                 }
             }
         }
 
         override fun bind(item: CardItem) {
-            itemView.run {
-                val card = item.content
-                itemView.shimmer_card.contentDescription = card.name
-                Glide.with(context)
-                    .load(card.imageUrl)
-                    .placeholder(R.drawable.placeholder_card)
-                    .error(R.drawable.placeholder_card)
-                    .addListener(
-                        CardImageRequestListener(
-                            card,
-                            shimmer_card,
-                            text_card_placeholder
-                        )
-                    )
-                    //.transform(RoundedCorners(10))
-                    .into(imageView_card_item)
-            }
+            itemView.card_image.card = item.content
         }
     }
 
@@ -134,7 +119,7 @@ class CollectionAdapter(
     }
 
     interface UserInteraction {
-        fun onCardClick(position: Int, card: Card)
+        fun onCardClick(card: Card)
         fun onRetryClick()
     }
     // endregion
