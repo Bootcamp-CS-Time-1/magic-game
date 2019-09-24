@@ -10,6 +10,7 @@ import org.koin.core.context.startKoin
 
 const val API_BASE_URL = "API_BASE_URL"
 const val ENABLE_HTTP_LOG = "ENABLE_HTTP_LOG"
+const val REQUEST_TIMEOUT = "REQUEST_TIMEOUT"
 
 /**
  * Inicializa os modulos com as declarações das dependencias
@@ -31,7 +32,8 @@ fun Application.setUpDI() {
              */
             mapOf(
                 API_BASE_URL to BuildConfig.API_BASE_URL,
-                ENABLE_HTTP_LOG to BuildConfig.DEBUG
+                ENABLE_HTTP_LOG to BuildConfig.DEBUG,
+                REQUEST_TIMEOUT to 30 * 1000L // 30s
             )
         )
 
