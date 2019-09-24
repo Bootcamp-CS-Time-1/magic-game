@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">Magic Game CS</string>
+    <string name="app_name" translatable="false">Magic Game</string>
+
+    <string name="description_collection">Collection: %s</string>
+    <string name="description_card_type">Cards of type: %s</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_load_more">Load more</string>
     <string name="add_card_to_deck">add card to deck</string>
-    <string name="tentar_novamente">Tentar Novamente</string>
 </resources>

@@ -1,75 +1,79 @@
 package br.com.bootcamp.magicgamecs.features.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.bootcamp.magicgamecs.domain.FetchCollectionPage
-import br.com.bootcamp.magicgamecs.models.pojo.State
+import br.com.bootcamp.magicgamecs.models.pojo.ViewState
+import br.com.bootcamp.magicgamecs.models.pojo.ViewState.Loading
+import br.com.bootcamp.magicgamecs.models.pojo.ViewState.Success
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+typealias CollectionsState = ViewState<List<CollectionItem>>
+
 class CollectionViewModel(
-    private val fetchCollectionPage: FetchCollectionPage
+    private val fetchCollectionPage: FetchCollectionPage,
+    initialState: CollectionsState = ViewState.FirstLaunch,
+    _nextPage: Int? = null
 ) : ViewModel() {
 
-    private val collections = MutableLiveData<List<CollectionItem>>()
+    val collections = MutableLiveData<CollectionsState>()
+        .apply { value = initialState }
 
-    val initialLoadState = MutableLiveData<State>()
-    val paginatedLoadState = MutableLiveData<State>()
+    private var nextPage: Int? = _nextPage
 
-    private var nextPage: Int? = null
-
-    fun getItemsSet(): LiveData<List<CollectionItem>> {
-        loadInitial()
-        return collections
+    fun reload() {
+        if (collections.value is Loading.FromEmpty) return
+        load()
     }
 
-    private fun loadInitial() {
-        if (collections.value?.isNotEmpty() == false || initialLoadState.value == State.Loaded)
+    fun loadInitial() {
+        if (collections.value !is ViewState.FirstLaunch && collections.value !is ViewState.Failed.FromEmpty)
             return
+        load()
+    }
+
+    private fun load() {
         viewModelScope.launch {
             try {
-                initialLoadState.postValue(State.Loading)
+                collections.postValue(Loading.FromEmpty)
                 val result = fetchPage()
-                collections.postValue(result)
-                initialLoadState.postValue(State.Loaded)
+                collections.postValue(Success(result))
             } catch (e: Throwable) {
-                initialLoadState.postValue(State.Failed(e))
+                collections.postValue(ViewState.Failed.FromEmpty(e))
             }
         }
     }
 
     fun fetchMoreItems() {
         val nextPage = this.nextPage ?: return
-        if (paginatedLoadState.value == State.Loading) return
+        val previous = (collections.value as? Success)?.value
+            ?: (collections.value as? ViewState.Failed.FromPrevious)?.previous
+            ?: return
 
         viewModelScope.launch {
             try {
-                paginatedLoadState.postValue(State.Loading)
+                collections.postValue(Loading.FromPrevious(previous))
                 val result = fetchPage(nextPage)
-                collections.postValue(result)
-                paginatedLoadState.postValue(State.Loaded)
+                collections.postValue(Success(result))
             } catch (e: Throwable) {
-                paginatedLoadState.postValue(State.Failed(e))
+                collections.postValue(ViewState.Failed.FromPrevious(e, previous))
             }
         }
     }
 
     private suspend fun fetchPage(page: Int = 0): List<CollectionItem> {
         val result = fetchCollectionPage(FetchCollectionPage.Params(page))
-        this.nextPage = result.nextPage
+        nextPage = result.nextPage
         return result.data
-            .flatMap { set ->
-                listOf(NameCollectionItem(set.name)) +
-                        set.typedCards.flatMap { type ->
-                            listOf(CardTypeItem(set.code, type.type)) +
+            .flatMap { collection ->
+                listOf(NameCollectionItem(collection.name)) +
+                        collection.typedCards.flatMap { type ->
+                            listOf(CardTypeItem(collection.code, type.type)) +
                                     type.cards.map { card -> CardItem(card) }
                         }
-            }.let {
-                if (result.nextPage != null) it + Placeholder
-                else it
             }
     }
 

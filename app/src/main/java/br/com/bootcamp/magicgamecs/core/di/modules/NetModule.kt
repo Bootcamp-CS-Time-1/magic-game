@@ -1,6 +1,7 @@
 package br.com.bootcamp.magicgamecs.core.di.modules
 
 import br.com.bootcamp.magicgamecs.core.di.API_BASE_URL
+import br.com.bootcamp.magicgamecs.core.di.REQUEST_TIMEOUT
 import br.com.bootcamp.magicgamecs.models.retrofit.services.WebServices
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -38,7 +39,9 @@ val netModule = module {
 
     factory<OkHttpClient> {
         OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(getProperty(REQUEST_TIMEOUT), TimeUnit.MILLISECONDS)
+            .callTimeout(getProperty(REQUEST_TIMEOUT), TimeUnit.MILLISECONDS)
+            .readTimeout(getProperty(REQUEST_TIMEOUT), TimeUnit.MILLISECONDS)
             .addInterceptor(get())
             .build()
     }

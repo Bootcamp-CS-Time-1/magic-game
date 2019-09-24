@@ -12,17 +12,19 @@ import br.com.bootcamp.magicgamecs.core.ext.show
 import br.com.bootcamp.magicgamecs.core.listeners.EndlessRecyclerViewScrollListener
 import br.com.bootcamp.magicgamecs.features.CardDetailActivity
 import br.com.bootcamp.magicgamecs.models.pojo.Card
-import br.com.bootcamp.magicgamecs.models.pojo.State
+import br.com.bootcamp.magicgamecs.models.pojo.ViewState
+import br.com.bootcamp.magicgamecs.models.pojo.ViewState.*
+import br.com.bootcamp.magicgamecs.models.pojo.ViewState.Failed
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.status_error.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CollectionAdapter.UserInteraction {
 
-    private val setsViewModel by viewModel<CollectionViewModel>()
+    private val collectionsViewModel by viewModel<CollectionViewModel>()
 
     private val collectionAdapter by lazy {
-        CollectionAdapter(::navigateToCard)
+        CollectionAdapter(this)
     }
 
     private val RecyclerView.gridLayoutManager: GridLayoutManager
@@ -33,45 +35,58 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btTentarNovamente.setOnClickListener {
-            setUpItemList()
+            collectionsViewModel.loadInitial()
         }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        setUpItemList()
-        setsViewModel.initialLoadState
-            .observe(this, Observer { state ->
-                onInitialStateChanged(state)
-            })
+        recyclerView_main.setUp()
+        collectionsViewModel.collections
+            .observe(this, Observer { state -> onViewStateChanged(state) })
+        collectionsViewModel.loadInitial()
     }
 
-    private fun onInitialStateChanged(state: State) {
+    private fun onViewStateChanged(state: ViewState<List<CollectionItem>>) {
         when (state) {
-            is State.Loading -> progressBar.show()
-            is State.Loaded -> {
-                progressBar.gone()
-                recyclerView_main.show()
-            }
-            is State.Failed -> {
-                progressBar.gone()
-                showError(state.error)
-            }
+            is Loading.FromEmpty -> onFirstLoading()
+            is Loading.FromPrevious -> onLoadingFromPrevious(state.previous)
+            is Success -> onSuccessLoad(state.value)
+            is Failed.FromEmpty -> onLoadFailed(state.reason)
+            is Failed.FromPrevious -> onFailedLoadFromPrevious(state.previous, state.reason)
         }
     }
 
-    private fun setUpItemList() {
-        tela_erro.gone()
-        recyclerView_main.setUp()
-        setsViewModel.getItemsSet().observe(this, Observer {
-            collectionAdapter.submitList(it)
-        })
+    private fun onFailedLoadFromPrevious(previous: List<CollectionItem>, reason: Throwable) {
+        collectionAdapter.submitListWithError(previous, reason)
     }
 
-    private fun showError(error: Throwable) {
+    private fun onLoadingFromPrevious(previous: List<CollectionItem>) {
+        collectionAdapter.submitListWithLoading(previous)
+    }
+
+    private fun onSuccessLoad(value: List<CollectionItem>) {
+        progressBar.gone()
+        recyclerView_main.show()
+        collectionAdapter.submitList(value)
+    }
+
+    private fun onFirstLoading() {
+        progressBar.show()
+    }
+
+    private fun onLoadFailed(error: Throwable) {
         error.printStackTrace()
         tvDescricao.text = error.message
         tela_erro.show()
+    }
+
+    override fun onCardClick(position: Int, card: Card) {
+        navigateToCard(position, card)
+    }
+
+    override fun onRetryClick() {
+        collectionsViewModel.fetchMoreItems()
     }
 
     private fun navigateToCard(position: Int, card: Card) {
@@ -85,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         gridLayoutManager.spanSizeLookup = collectionAdapter.SpanSizeLookup()
         addOnScrollListener(
             EndlessRecyclerViewScrollListener(layoutManager!!) {
-                setsViewModel.fetchMoreItems()
+                collectionsViewModel.fetchMoreItems()
             }
         )
     }
