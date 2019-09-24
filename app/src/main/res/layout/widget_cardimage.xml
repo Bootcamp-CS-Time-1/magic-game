@@ -28,5 +28,6 @@
         android:paddingBottom="16dp"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
+        android:textSize="12sp"
         tools:text="Card name" />
 </com.facebook.shimmer.ShimmerFrameLayout>
