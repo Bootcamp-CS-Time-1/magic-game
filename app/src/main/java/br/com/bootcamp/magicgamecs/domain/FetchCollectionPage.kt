@@ -1,5 +1,6 @@
 package br.com.bootcamp.magicgamecs.domain
 
+import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.CardType
 import br.com.bootcamp.magicgamecs.models.pojo.Collection
 import br.com.bootcamp.magicgamecs.models.pojo.PageResult
@@ -21,6 +22,9 @@ class FetchCollectionPage(
         magicSets[params.page].run {
             if (typedCards.isEmpty()) {
                 val grouped = repository.getAllCardsBySetCode(code)
+                    .fold(listOf<Card>()) { acc, card ->
+                        acc + card.types.map { card.copy(type = it) }
+                    }
                     .groupBy { it.type }
                     .map { CardType(it.key, it.value) }
 

@@ -18,6 +18,9 @@ android {
         buildConfigField "String", "API_BASE_URL", '"https://api.magicthegathering.io/v1/"'
 
     }
+    androidExtensions {
+        experimental = true
+    }
     buildTypes {
         release {
             minifyEnabled false
