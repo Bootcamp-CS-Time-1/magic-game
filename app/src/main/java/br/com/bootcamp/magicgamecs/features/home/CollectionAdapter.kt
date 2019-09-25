@@ -11,7 +11,6 @@ import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.base.ViewHolder
 import br.com.bootcamp.magicgamecs.core.widgets.CardImageView
 import br.com.bootcamp.magicgamecs.models.pojo.Card
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_activity_card.view.*
 import kotlinx.android.synthetic.main.item_main_activity_collection.view.*
 import kotlinx.android.synthetic.main.item_main_activity_failed.view.*
@@ -45,15 +44,13 @@ class CollectionAdapter(
             VIEW_TYPE_SUBTITLE -> TypeViewHolder(view)
             VIEW_TYPE_TITLE -> CollectionViewHolder(view)
             VIEW_TYPE_PLACEHOLDER -> PlaceholderViewHolder(view)
-            VIEW_TYPE_FAILED -> ErrorViewHolder(view)
+            VIEW_TYPE_FAILED -> ErrorViewHolder(view, listener)
             else -> error("Invalid view type")
         } as ViewHolder<CollectionItem>
     }
 
     override fun onBindViewHolder(holder: ViewHolder<CollectionItem>, position: Int) {
-        getItem(position)?.let {
-            holder.bind(it)
-        }
+        getItem(position)?.let { item -> holder.bind(item) }
     }
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
@@ -102,7 +99,8 @@ class CollectionAdapter(
 
     class PlaceholderViewHolder(view: View) : ViewHolder<Placeholder>(view)
 
-    inner class ErrorViewHolder(view: View) : ViewHolder<Failed>(view) {
+    class ErrorViewHolder(view: View, private val listener: UserInteraction?) :
+        ViewHolder<Failed>(view) {
         init {
             itemView.btn_retry.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
