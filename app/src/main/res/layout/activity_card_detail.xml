@@ -7,20 +7,20 @@
     android:background="@drawable/fundo"
     tools:context=".features.CardDetailActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageView_card_detail"
+    <include
+        layout="@layout/item_main_activity_card"
         android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/materialButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/fundo" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_close_detail" />
 
     <com.google.android.material.button.MaterialButton
-        android:visibility="invisible"
         android:id="@+id/materialButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
