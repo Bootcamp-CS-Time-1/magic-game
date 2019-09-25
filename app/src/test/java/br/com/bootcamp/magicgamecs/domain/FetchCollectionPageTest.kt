@@ -51,8 +51,8 @@ class FetchCollectionPageTest {
         runBlocking {
             // Arrange
             val collection = Collection("code", "Name")
-            val card0 = Card("1", null, "type A")
-            val card1 = Card("2", null, "type A")
+            val card0 = Card("1", null, type = "type A", types = listOf("type A"))
+            val card1 = Card("2", null, type = "type A", types = listOf("type A"))
 
             coEvery {
                 repository.getAllSets()
@@ -85,8 +85,8 @@ class FetchCollectionPageTest {
             // Arrange
             val collection0 = Collection("code 1", "Name 1")
             val collection1 = Collection("code 2", "Name 2")
-            val card0 = Card("1", null, "type A")
-            val card1 = Card("2", null, "type A")
+            val card0 = Card("1", null, type = "type A", types = listOf("type A"))
+            val card1 = Card("2", null, type = "type A", types = listOf("type A"))
 
             coEvery {
                 repository.getAllSets()
@@ -119,9 +119,9 @@ class FetchCollectionPageTest {
             // Arrange
             val collection0 = Collection("code 1", "Name 1")
             val collection1 = Collection("code 2", "Name 2")
-            val card0 = Card("1", null, "type A")
-            val card1 = Card("2", null, "type A")
-            val card2 = Card("3", null, "type B")
+            val card0 = Card("1", null, type = "type A", types = listOf("type A"))
+            val card1 = Card("2", null, type = "type A", types = listOf("type A"))
+            val card2 = Card("3", null, type = "type B", types = listOf("type B"))
 
             coEvery {
                 repository.getAllSets()
@@ -162,10 +162,10 @@ class FetchCollectionPageTest {
         runBlocking {
             // Arrange
             val collection = Collection("code 1", "Name 1")
-            val card0 = Card("1", null, "type A")
-            val card1 = Card("2", null, "type B")
-            val card2 = Card("3", null, "type C")
-            val card3 = Card("4", null, "type C")
+            val card0 = Card("1", null, type = "type A", types = listOf("type A"))
+            val card1 = Card("2", null, type = "type B", types = listOf("type B"))
+            val card2 = Card("3", null, type = "type C", types = listOf("type C"))
+            val card3 = Card("4", null, type = "type C", types = listOf("type C"))
 
             coEvery {
                 repository.getAllSets()
@@ -219,6 +219,36 @@ class FetchCollectionPageTest {
 
             // Act
             fetchCollectionPage(FetchCollectionPage.Params(1))
+        }
+    }
+
+    @Test
+    fun givenFetchPage_whenMultipleTypes_shouldDuplicateCard() {
+        runBlocking {
+            // Arrange
+            val collection = Collection("code 1", "Name 1")
+            val card = Card("1", null, types = listOf("type A", "type B"))
+
+            coEvery {
+                repository.getAllSets()
+            } returns listOf(collection)
+
+            coEvery {
+                repository.getAllCardsBySetCode("code 1")
+            } returns listOf(card)
+
+            // Act
+            val result = fetchCollectionPage(FetchCollectionPage.Params(0))
+
+            val expectedResult = listOf(
+                Collection(
+                    collection.code, collection.name, mutableListOf(
+                        CardType("type A", listOf(card.copy(type = card.types.first()))),
+                        CardType("type B", listOf(card.copy(type = card.types[1])))
+                    )
+                )
+            )
+            assertEquals(PageResult(expectedResult, 1, null), result)
         }
     }
 }

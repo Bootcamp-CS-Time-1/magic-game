@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), CollectionAdapter.UserInteraction {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         recyclerView_main.setUp()
-        collectionsViewModel.collections
+        collectionsViewModel.collectionsState
             .observe(this, Observer { state -> onViewStateChanged(state) })
         collectionsViewModel.loadInitial()
     }

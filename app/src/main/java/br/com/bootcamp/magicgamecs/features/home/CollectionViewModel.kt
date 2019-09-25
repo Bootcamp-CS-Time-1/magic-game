@@ -1,5 +1,6 @@
 package br.com.bootcamp.magicgamecs.features.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,8 +8,6 @@ import br.com.bootcamp.magicgamecs.domain.FetchCollectionPage
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState.Loading
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState.Success
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 typealias CollectionsState = ViewState<List<CollectionItem>>
@@ -19,18 +18,21 @@ class CollectionViewModel(
     _nextPage: Int? = null
 ) : ViewModel() {
 
-    val collections = MutableLiveData<CollectionsState>()
+    private val state = MutableLiveData<CollectionsState>()
         .apply { value = initialState }
+
+    val collectionsState: LiveData<CollectionsState>
+        get() = state
 
     private var nextPage: Int? = _nextPage
 
     fun reload() {
-        if (collections.value is Loading.FromEmpty) return
+        if (state.value is Loading.FromEmpty) return
         load()
     }
 
     fun loadInitial() {
-        if (collections.value !is ViewState.FirstLaunch && collections.value !is ViewState.Failed.FromEmpty)
+        if (state.value !is ViewState.FirstLaunch && state.value !is ViewState.Failed.FromEmpty)
             return
         load()
     }
@@ -38,28 +40,28 @@ class CollectionViewModel(
     private fun load() {
         viewModelScope.launch {
             try {
-                collections.postValue(Loading.FromEmpty)
+                state.postValue(Loading.FromEmpty)
                 val result = fetchPage()
-                collections.postValue(Success(result))
+                state.postValue(Success(result))
             } catch (e: Throwable) {
-                collections.postValue(ViewState.Failed.FromEmpty(e))
+                state.postValue(ViewState.Failed.FromEmpty(e))
             }
         }
     }
 
     fun fetchMoreItems() {
         val nextPage = this.nextPage ?: return
-        val previous = (collections.value as? Success)?.value
-            ?: (collections.value as? ViewState.Failed.FromPrevious)?.previous
+        val previous = (state.value as? Success)?.value
+            ?: (state.value as? ViewState.Failed.FromPrevious)?.previous
             ?: return
 
         viewModelScope.launch {
             try {
-                collections.postValue(Loading.FromPrevious(previous))
+                state.postValue(Loading.FromPrevious(previous))
                 val result = fetchPage(nextPage)
-                collections.postValue(Success(result))
+                state.postValue(Success(result))
             } catch (e: Throwable) {
-                collections.postValue(ViewState.Failed.FromPrevious(e, previous))
+                state.postValue(ViewState.Failed.FromPrevious(e, previous))
             }
         }
     }
@@ -75,11 +77,5 @@ class CollectionViewModel(
                                     type.cards.map { card -> CardItem(card) }
                         }
             }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        if (viewModelScope.isActive)
-            viewModelScope.cancel()
     }
 }
