@@ -24,7 +24,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
 
-    //private val collectionsViewModel by viewModel<CollectionViewModel>()
     private val collectionsViewModel by sharedViewModel<CollectionViewModel>()
     private val collectionAdapter by lazy {
         CollectionAdapter(this)
