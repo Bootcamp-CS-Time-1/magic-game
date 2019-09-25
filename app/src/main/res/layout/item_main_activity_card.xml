@@ -15,6 +15,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="@drawable/bg_selectable_item"
+        app:civ_captionTextSize="12sp"
         app:layout_constraintDimensionRatio="0.72"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

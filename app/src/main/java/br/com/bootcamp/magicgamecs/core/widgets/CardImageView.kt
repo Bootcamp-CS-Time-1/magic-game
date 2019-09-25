@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.widget.FrameLayout
 import android.widget.TextView
 import br.com.bootcamp.magicgamecs.R
@@ -17,6 +18,7 @@ import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.widget_cardimage.view.*
 
+
 class CardImageView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
@@ -24,6 +26,15 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 
     init {
         inflate(context, R.layout.widget_cardimage, this)
+        attrs?.init()
+    }
+
+    private fun AttributeSet.init() {
+        val typedArray = context.obtainStyledAttributes(this, R.styleable.CardImageView, 0, 0)
+        val textSize =
+            typedArray.getDimensionPixelSize(R.styleable.CardImageView_civ_captionTextSize, 0)
+        text_card_placeholder.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+        typedArray.recycle()
     }
 
     var card: Card? = null
@@ -50,7 +61,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             .into(imageView_card_item)
     }
 
-    private class CardImageRequestListener(
+    class CardImageRequestListener(
         private val card: Card,
         private val shimmer: ShimmerFrameLayout,
         private val textPlaceholder: TextView

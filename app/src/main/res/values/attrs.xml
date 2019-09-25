@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CardImageView">
+        <attr name="civ_captionTextSize" format="dimension" />
+    </declare-styleable>
+</resources>

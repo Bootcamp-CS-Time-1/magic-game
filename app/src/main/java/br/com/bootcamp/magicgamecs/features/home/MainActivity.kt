@@ -10,7 +10,7 @@ import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.ext.gone
 import br.com.bootcamp.magicgamecs.core.ext.show
 import br.com.bootcamp.magicgamecs.core.listeners.EndlessRecyclerViewScrollListener
-import br.com.bootcamp.magicgamecs.features.CardDetailActivity
+import br.com.bootcamp.magicgamecs.features.detail.CardDetailActivity
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState.*
