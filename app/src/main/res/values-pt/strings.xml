@@ -7,6 +7,6 @@
     <string name="add_card_to_deck">adicionar carta ao deck</string>
     <string name="remove_card_to_deck">remover carta do deck</string>
 
-    <string name="general_list">Lista geral</string>
+    <string name="general_list">Cartas</string>
     <string name="favorites">Favoritos</string>
 </resources>
