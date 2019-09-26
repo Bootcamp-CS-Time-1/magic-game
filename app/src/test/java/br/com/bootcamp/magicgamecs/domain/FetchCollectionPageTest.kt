@@ -75,7 +75,7 @@ class FetchCollectionPageTest {
                     )
                 )
             )
-            assertEquals(PageResult(listOf(expectedResult), 1, null), result)
+            assertEquals(PageResult(listOf(expectedResult), null), result)
         }
     }
 
@@ -109,7 +109,7 @@ class FetchCollectionPageTest {
                     )
                 )
             )
-            assertEquals(PageResult(listOf(expectedResult), 2, 1), result)
+            assertEquals(PageResult(listOf(expectedResult), 1), result)
         }
     }
 
@@ -153,7 +153,7 @@ class FetchCollectionPageTest {
                     )
                 )
             )
-            assertEquals(PageResult(expectedResult, 2, null), result)
+            assertEquals(PageResult(expectedResult, null), result)
         }
     }
 
@@ -188,7 +188,7 @@ class FetchCollectionPageTest {
                     )
                 )
             )
-            assertEquals(PageResult(expectedResult, 1, null), result)
+            assertEquals(PageResult(expectedResult, null), result)
         }
     }
 
@@ -248,7 +248,7 @@ class FetchCollectionPageTest {
                     )
                 )
             )
-            assertEquals(PageResult(expectedResult, 1, null), result)
+            assertEquals(PageResult(expectedResult, null), result)
         }
     }
 }

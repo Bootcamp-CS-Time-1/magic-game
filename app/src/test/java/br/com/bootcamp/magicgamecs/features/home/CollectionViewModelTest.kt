@@ -210,7 +210,7 @@ class CollectionViewModelTest {
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
-        } returns PageResult(listOf(magicSet0), 2, 1)
+        } returns PageResult(listOf(magicSet0), 1)
 
         // Act
         collectionViewModel.loadInitial()
@@ -284,7 +284,7 @@ class CollectionViewModelTest {
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(1))
-        } returns PageResult(listOf(magicSet0, magicSet1), 2, null)
+        } returns PageResult(listOf(magicSet0, magicSet1), null)
 
         // Act
         collectionViewModel.fetchMoreItems()
@@ -309,7 +309,7 @@ class CollectionViewModelTest {
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(0))
-        } returns PageResult(listOf(), 1, null)
+        } returns PageResult(listOf(), null)
 
         // Act
         collectionViewModel.reload()
@@ -337,7 +337,7 @@ class CollectionViewModelTest {
 
         coEvery {
             fetchCollectionPage.invoke(FetchCollectionPage.Params(nextPage))
-        } returns PageResult(listOf(), 1, null)
+        } returns PageResult(listOf(), null)
 
         // Act
         collectionViewModel.fetchMoreItems()

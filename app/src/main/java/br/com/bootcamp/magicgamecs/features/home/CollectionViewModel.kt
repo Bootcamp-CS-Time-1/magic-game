@@ -44,6 +44,7 @@ class CollectionViewModel(
                 val result = fetchPage()
                 state.postValue(Success(result))
             } catch (e: Throwable) {
+                e.printStackTrace()
                 state.postValue(ViewState.Failed.FromEmpty(e))
             }
         }
@@ -61,6 +62,7 @@ class CollectionViewModel(
                 val result = fetchPage(nextPage)
                 state.postValue(Success(result))
             } catch (e: Throwable) {
+                e.printStackTrace()
                 state.postValue(ViewState.Failed.FromPrevious(e, previous))
             }
         }

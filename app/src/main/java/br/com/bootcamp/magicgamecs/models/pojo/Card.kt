@@ -6,8 +6,10 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Card(
     val id: String,
-    val imageUrl: String?,
+    val imageUrl: String? = null,
     val type: String = "",
     val name: String = "",
+    val set: String = "",
+    val setName: String = "",
     val types: List<String> = listOf()
 ) : Parcelable

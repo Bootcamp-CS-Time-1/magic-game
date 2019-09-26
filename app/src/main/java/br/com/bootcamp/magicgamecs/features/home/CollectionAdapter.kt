@@ -11,6 +11,7 @@ import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.base.ViewHolder
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_main_activity_card.view.*
 import kotlinx.android.synthetic.main.item_main_activity_collection.view.*
 import kotlinx.android.synthetic.main.item_main_activity_failed.view.*
@@ -93,7 +94,7 @@ class CollectionAdapter(
                             text_card_placeholder
                         )
                     )
-                    //.transform(RoundedCorners(10))
+                    .transform(RoundedCorners(10))
                     .into(imageView_card_item)
             }
         }

@@ -12,10 +12,11 @@ interface WebServices {
     suspend fun listSets(): Response<CollectionResponse>
 
     @GET("cards")
-    suspend fun listCard(
-        @Query("set") set: String,
-        @Query("page") page: Int,
+    suspend fun listCards(
+        @Query("set") set: String?,
+        @Query("page") page: Int?,
         @Query("pageSize") limit: Int,
-        @Query("orderBy") orderBy: String
+        @Query("orderBy") orderBy: String,
+        @Query("name") term: String?
     ): CardsResponse
 }
