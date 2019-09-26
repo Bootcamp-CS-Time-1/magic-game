@@ -1,9 +1,11 @@
 package br.com.bootcamp.magicgamecs.models.repository.impl
 
+import androidx.lifecycle.LiveData
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.Collection
 import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
 import br.com.bootcamp.magicgamecs.models.retrofit.services.WebServices
+import br.com.bootcamp.magicgamecs.models.room.AppDataBase
 import retrofit2.HttpException
 
 class MagicRepositoryImpl(
@@ -33,4 +35,5 @@ class MagicRepositoryImpl(
 
         return allCards
     }
+
 }

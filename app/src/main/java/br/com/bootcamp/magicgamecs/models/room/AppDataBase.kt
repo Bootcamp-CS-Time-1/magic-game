@@ -36,25 +36,4 @@ abstract class AppDataBase : RoomDatabase() {
 
     abstract fun cardDao(): CardDao
 
-//    companion object {
-//
-//        private var INSTANCE: AppDataBase? = null
-//
-//        fun getDatabase(context: Context): AppDataBase {
-//            val tempInstance = INSTANCE
-//            if (tempInstance != null) {
-//                return tempInstance
-//            }
-//            synchronized(this) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    AppDataBase::class.java,
-//                    "magicDB"
-//                ).allowMainThreadQueries().build()
-//                INSTANCE = instance
-//                return instance
-//            }
-//        }
-//    }
-
 }
