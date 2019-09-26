@@ -19,6 +19,7 @@ import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState
 import kotlinx.android.synthetic.main.fragment_collection.*
 import kotlinx.android.synthetic.main.status_error.*
+import kotlinx.android.synthetic.main.status_error.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
@@ -36,8 +37,16 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_collection, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_collection, container, false)
+
+        view.btTentarNovamente.setOnClickListener {
+            tela_erro.gone()
+            progressBar.show()
+            collectionsViewModel.loadInitial()
+        }
+
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -79,6 +88,7 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
     private fun onLoadFailed(error: Throwable) {
         error.printStackTrace()
         tvDescricao.text = error.message
+        progressBar.gone()
         tela_erro.show()
     }
 
