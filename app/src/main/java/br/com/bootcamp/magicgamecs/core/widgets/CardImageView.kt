@@ -2,7 +2,6 @@ package br.com.bootcamp.magicgamecs.core.widgets
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -12,20 +11,12 @@ import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.Key
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.util.Util
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.widget_cardimage.view.*
-import java.nio.ByteBuffer
-import java.security.MessageDigest
-import kotlin.math.roundToInt
 
 
 class CardImageView
@@ -60,7 +51,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             .placeholder(R.drawable.placeholder_card)
             .error(R.drawable.placeholder_card)
             .fallback(R.drawable.placeholder_card)
-            .transform(RoundedCorners(0.05f))
+            .transform(RoundedCornersTransformation(0.05f))
             .addListener(
                 CardImageRequestListener(
                     card,
@@ -122,48 +113,4 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 
     }
 
-    class RoundedCorners(
-        private val roundingRadius: Float
-    ) : BitmapTransformation() {
-
-        companion object {
-            private val ID =
-                "br.com.bootcamp.magicgamecs.core.widgets.CardImageView\$RoundedCorners"
-            private val ID_BYTES = ID.toByteArray(Key.CHARSET)
-        }
-
-        override fun transform(
-            pool: BitmapPool,
-            toTransform: Bitmap,
-            outWidth: Int,
-            outHeight: Int
-        ): Bitmap =
-            TransformationUtils.roundedCorners(
-                pool,
-                toTransform,
-                (roundingRadius * toTransform.width).roundToInt()
-            )
-
-        override fun updateDiskCacheKey(messageDigest: MessageDigest) {
-            messageDigest.update(ID_BYTES)
-
-            val radiusData = ByteBuffer.allocate(4).putFloat(roundingRadius).array()
-            messageDigest.update(radiusData)
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (other is RoundedCorners) {
-                return roundingRadius == other.roundingRadius
-            }
-            return false
-        }
-
-        override fun hashCode(): Int {
-            return Util.hashCode(
-                ID.hashCode(),
-                Util.hashCode(roundingRadius)
-            )
-        }
-
-    }
 }
