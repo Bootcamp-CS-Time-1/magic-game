@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pedrenrique.githubapp">
+
+    <instrumentation
+        android:name="androidx.test.runner.AndroidJUnitRunner"
+        android:targetPackage="br.com.bootcamp.magicgamecs" />
+
+    <application android:usesCleartextTraffic="true" />
+
+</manifest>
