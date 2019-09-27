@@ -14,11 +14,11 @@ interface CardDao {
     fun loadAllCards(): LiveData<List<Card>>
 
     @Query("SELECT * FROM card WHERE id = :id")
-    fun searchFavoriteCard(id: String) : LiveData<Card>
+    fun searchFavoriteCard(id: String): LiveData<Card>
 
     @Insert
-    fun insertCard(card: Card)
+    suspend fun insertCard(card: Card)
 
     @Delete
-    fun deleteCard(card: Card)
+    suspend fun deleteCard(card: Card)
 }

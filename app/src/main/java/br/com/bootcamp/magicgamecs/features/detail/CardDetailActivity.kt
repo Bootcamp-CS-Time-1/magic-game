@@ -1,27 +1,18 @@
 package br.com.bootcamp.magicgamecs.features.detail
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.features.detail.DetailViewModel
-import br.com.bootcamp.magicgamecs.features.detail.DetailViewModelFactory
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_card_detail.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CardDetailActivity : AppCompatActivity() {
 
-    private val detailViewModel by lazy {
-        ViewModelProviders.of(this, detailiewModelFactory).get(DetailViewModel::class.java)
-    }
-
-    private val detailiewModelFactory by lazy {
-        DetailViewModelFactory(this, card)
-    }
+    private val detailViewModel by viewModel<DetailViewModel>()
 
     private lateinit var card: Card
     private lateinit var cards: List<Card>
@@ -33,6 +24,7 @@ class CardDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_detail)
 
+        card = intent.getParcelableExtra<Card>("CARD")
 
         val card = intent.getParcelableExtra<Card>("CARD")
         card_image.card = card
@@ -45,9 +37,9 @@ class CardDetailActivity : AppCompatActivity() {
 
         materialButton.setOnClickListener {
             if (inDeck) {
-                detailViewModel.removeCard()
+                detailViewModel.removeCard(card)
             } else {
-                detailViewModel.addCard()
+                detailViewModel.addCard(card)
             }
         }
 
@@ -62,7 +54,7 @@ class CardDetailActivity : AppCompatActivity() {
     }
 
     private fun isFavorite() {
-        detailViewModel.getCardFavorite().observe(this, Observer {
+        detailViewModel.getCardFavorite(card).observe(this, Observer {
             if (it != null) {
                 inDeck = true
                 materialButton.text = resources.getText(R.string.remove_card_to_deck)
