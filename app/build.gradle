@@ -69,11 +69,6 @@ dependencies {
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    implementation "androidx.navigation:navigation-fragment:$navigation"
-    implementation "androidx.navigation:navigation-ui:$navigation"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
-
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.koin:koin-test:$koin_version"
     testImplementation "io.mockk:mockk:$mockk_version"
