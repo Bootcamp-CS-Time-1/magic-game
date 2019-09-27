@@ -20,12 +20,13 @@ import br.com.bootcamp.magicgamecs.models.pojo.ViewState
 import kotlinx.android.synthetic.main.fragment_collection.*
 import kotlinx.android.synthetic.main.status_error.*
 import kotlinx.android.synthetic.main.status_error.view.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
 
-    private val collectionsViewModel by viewModel<CollectionViewModel>()
-
+    //private val collectionsViewModel by viewModel<CollectionViewModel>()
+    private val collectionsViewModel by sharedViewModel<CollectionViewModel>()
     private val collectionAdapter by lazy {
         CollectionAdapter(this)
     }
@@ -55,7 +56,11 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
         collectionsViewModel.collectionsState
             .observe(this, Observer { state -> onViewStateChanged(state) })
         collectionsViewModel.loadInitial()
+
+
     }
+
+
 
     private fun onViewStateChanged(state: ViewState<List<CollectionItem>>) {
         when (state) {
