@@ -3,6 +3,7 @@ package br.com.bootcamp.magicgamecs.core.di.modules
 import br.com.bootcamp.magicgamecs.core.di.API_BASE_URL
 import br.com.bootcamp.magicgamecs.core.di.REQUEST_TIMEOUT
 import br.com.bootcamp.magicgamecs.models.retrofit.services.WebServices
+import br.com.bootcamp.magicgamecs.models.room.CardDao
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor

@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -44,6 +46,8 @@ dependencies {
     implementation "com.github.GoodieBag:CarouselPicker:$carousel_version"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
 
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
@@ -67,7 +71,15 @@ dependencies {
 
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
     androidTestImplementation "androidx.test:runner:$androidx_test_version"
     androidTestImplementation "androidx.test:rules:$androidx_test_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+
 }

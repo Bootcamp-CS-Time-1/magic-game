@@ -5,4 +5,6 @@
     <string name="action_retry">Tentar novamente</string>
     <string name="action_load_more">Carregar mais</string>
     <string name="add_card_to_deck">adicionar carta ao deck</string>
+    <string name="remove_card_to_deck">remover carta do deck</string>
+
 </resources>
