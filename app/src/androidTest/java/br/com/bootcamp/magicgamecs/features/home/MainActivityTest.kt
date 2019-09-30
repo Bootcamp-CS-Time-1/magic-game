@@ -1,8 +1,8 @@
 package br.com.bootcamp.magicgamecs.features.home
 
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
