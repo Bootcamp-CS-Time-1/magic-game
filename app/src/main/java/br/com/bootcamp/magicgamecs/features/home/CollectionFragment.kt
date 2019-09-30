@@ -55,15 +55,12 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        recyclerView_main.setUp()
+        setUpList()
         collectionsViewModel.collectionsState
             .observe(this, Observer { state -> onViewStateChanged(state) })
         collectionsViewModel.loadInitial()
 
-
     }
-
-
 
     private fun onViewStateChanged(state: ViewState<List<CollectionItem>>) {
         when (state) {
@@ -114,7 +111,7 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
         startActivity(intent)
     }
 
-    private fun RecyclerView.setUp() {
+    private fun setUpList() = with(recyclerView_main) {
         adapter = collectionAdapter
         gridLayoutManager.spanSizeLookup = collectionAdapter.SpanSizeLookup()
         addOnScrollListener(
