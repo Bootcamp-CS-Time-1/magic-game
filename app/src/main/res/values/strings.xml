@@ -6,6 +6,9 @@
     <string name="action_retry">Retry</string>
     <string name="action_load_more">Load more</string>
     <string name="add_card_to_deck">add card to deck</string>
+
+    <string name="general_list">Sets</string>
+    <string name="favorites">Favorites</string>
     <string name="remove_card_to_deck">remove card to deck</string>
 
 </resources>

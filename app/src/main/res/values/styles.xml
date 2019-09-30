@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppBaseTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -10,11 +10,7 @@
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="RobotoTextViewStyle" parent="Widget.AppCompat.TextView">
