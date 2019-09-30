@@ -10,7 +10,7 @@ import br.com.bootcamp.magicgamecs.R
 import br.com.bootcamp.magicgamecs.core.ext.gone
 import br.com.bootcamp.magicgamecs.core.ext.show
 import br.com.bootcamp.magicgamecs.core.listeners.EndlessRecyclerViewScrollListener
-import br.com.bootcamp.magicgamecs.features.CardDetailActivity
+import br.com.bootcamp.magicgamecs.features.detail.CardDetailActivity
 import br.com.bootcamp.magicgamecs.models.pojo.Card
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState
 import br.com.bootcamp.magicgamecs.models.pojo.ViewState.*
@@ -81,15 +81,15 @@ class MainActivity : AppCompatActivity(), CollectionAdapter.UserInteraction {
         tela_erro.show()
     }
 
-    override fun onCardClick(position: Int, card: Card) {
-        navigateToCard(position, card)
+    override fun onCardClick(card: Card) {
+        navigateToCard(card)
     }
 
     override fun onRetryClick() {
         collectionsViewModel.fetchMoreItems()
     }
 
-    private fun navigateToCard(position: Int, card: Card) {
+    private fun navigateToCard(card: Card) {
         val intent = Intent(this, CardDetailActivity::class.java)
         intent.putExtra("CARD", card)
         startActivity(intent)
