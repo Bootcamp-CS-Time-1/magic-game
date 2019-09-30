@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_collection.*
 import kotlinx.android.synthetic.main.status_error.*
 import kotlinx.android.synthetic.main.status_error.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
 
@@ -45,7 +44,7 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.btTentarNovamente.setOnClickListener {
+        view.btRetry.setOnClickListener {
             tela_erro.gone()
             progressBar.show()
             collectionsViewModel.loadInitial()
@@ -92,7 +91,7 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
 
     private fun onLoadFailed(error: Throwable) {
         error.printStackTrace()
-        tvDescricao.text = error.message
+        tvDescription.text = error.message
         progressBar.gone()
         tela_erro.show()
     }
