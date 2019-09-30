@@ -39,7 +39,11 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_collection, container, false)
+        return inflater.inflate(R.layout.fragment_collection, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         view.btTentarNovamente.setOnClickListener {
             tela_erro.gone()
@@ -47,7 +51,6 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
             collectionsViewModel.loadInitial()
         }
 
-        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

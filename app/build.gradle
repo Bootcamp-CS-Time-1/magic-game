@@ -67,7 +67,6 @@ dependencies {
     //Interceptor para visualizar os logs das requisições do Retrofit
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_version"
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.koin:koin-test:$koin_version"
