@@ -4,10 +4,8 @@ import br.com.bootcamp.magicgamecs.domain.FetchCollectionPage
 import br.com.bootcamp.magicgamecs.features.detail.DetailViewModel
 import br.com.bootcamp.magicgamecs.features.home.CollectionViewModel
 import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
-import br.com.bootcamp.magicgamecs.models.repository.impl.MagicRepositoryDb
 import br.com.bootcamp.magicgamecs.models.repository.impl.MagicRepositoryImpl
 import br.com.bootcamp.magicgamecs.models.room.AppDataBase
-import br.com.bootcamp.magicgamecs.models.room.CardDao
 import org.koin.dsl.module
 
 /**

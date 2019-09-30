@@ -22,9 +22,8 @@ import kotlinx.android.synthetic.main.status_error.*
 import kotlinx.android.synthetic.main.status_error.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
+class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionAdapter.UserInteraction {
 
-    //private val collectionsViewModel by viewModel<CollectionViewModel>()
     private val collectionsViewModel by sharedViewModel<CollectionViewModel>()
     private val collectionAdapter by lazy {
         CollectionAdapter(this)
@@ -32,14 +31,6 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
 
     private val RecyclerView.gridLayoutManager: GridLayoutManager
         get() = layoutManager as GridLayoutManager
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        return inflater.inflate(R.layout.fragment_collection, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
