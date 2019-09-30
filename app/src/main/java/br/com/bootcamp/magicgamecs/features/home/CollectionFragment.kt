@@ -45,7 +45,7 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
         super.onViewCreated(view, savedInstanceState)
 
         view.btRetry.setOnClickListener {
-            tela_erro.gone()
+            error_screen.gone()
             progressBar.show()
             collectionsViewModel.loadInitial()
         }
@@ -93,7 +93,7 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
         error.printStackTrace()
         tvDescription.text = error.message
         progressBar.gone()
-        tela_erro.show()
+        error_screen.show()
     }
 
     override fun onCardClick( card: Card) {
