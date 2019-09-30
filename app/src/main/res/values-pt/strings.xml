@@ -9,4 +9,5 @@
 
     <string name="general_list">Cartas</string>
     <string name="favorites">Favoritos</string>
+    <string name="text_empty_deck">Seu deck não possuí cartas</string>
 </resources>

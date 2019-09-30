@@ -8,7 +8,7 @@ import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
 
 class FetchCollectionPage(
     private val repository: MagicRepository
-) : UseCase<FetchCollectionPage.Params, PageResult<List<Collection>>>() {
+) : CoUseCase<FetchCollectionPage.Params, PageResult<List<Collection>>>() {
 
     private val sets = mutableListOf<Collection>()
 

@@ -2,9 +2,7 @@ package br.com.bootcamp.magicgamecs.features.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,11 +17,12 @@ import br.com.bootcamp.magicgamecs.models.pojo.ViewState
 import kotlinx.android.synthetic.main.fragment_collection.*
 import kotlinx.android.synthetic.main.status_error.*
 import kotlinx.android.synthetic.main.status_error.view.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
+class CollectionFragment : Fragment(R.layout.fragment_collection),
+    CollectionAdapter.UserInteraction {
 
-    private val collectionsViewModel by viewModel<CollectionViewModel>()
+    private val collectionsViewModel by sharedViewModel<CollectionViewModel>()
 
     private val collectionAdapter by lazy {
         CollectionAdapter(this)
@@ -31,14 +30,6 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
 
     private val RecyclerView.gridLayoutManager: GridLayoutManager
         get() = layoutManager as GridLayoutManager
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        return inflater.inflate(R.layout.fragment_collection, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,7 +88,7 @@ class CollectionFragment : Fragment(), CollectionAdapter.UserInteraction {
         tela_erro.show()
     }
 
-    override fun onCardClick( card: Card) {
+    override fun onCardClick(card: Card) {
         navigateToCard(card)
     }
 

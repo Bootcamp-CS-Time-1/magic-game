@@ -1,7 +1,9 @@
 package br.com.bootcamp.magicgamecs.core.di.modules
 
 import br.com.bootcamp.magicgamecs.domain.FetchCollectionPage
+import br.com.bootcamp.magicgamecs.domain.FetchFavoriteCards
 import br.com.bootcamp.magicgamecs.features.detail.DetailViewModel
+import br.com.bootcamp.magicgamecs.features.favorites.FavoritesViewModel
 import br.com.bootcamp.magicgamecs.features.home.CollectionViewModel
 import br.com.bootcamp.magicgamecs.models.repository.MagicRepository
 import br.com.bootcamp.magicgamecs.models.repository.impl.MagicRepositoryImpl
@@ -57,9 +59,16 @@ val appModule = module {
     factory {
         CollectionViewModel(get())
     }
+    factory {
+        FavoritesViewModel(get())
+    }
 
     factory {
         FetchCollectionPage(get())
+    }
+
+    factory {
+        FetchFavoriteCards(get())
     }
 
     factory<MagicRepository> {

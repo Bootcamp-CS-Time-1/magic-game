@@ -15,6 +15,12 @@
 
     <style name="RobotoTextViewStyle" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/sf_pro_display_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="RobotoTextViewStyle.Bold" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/sf_pro_display_regular</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

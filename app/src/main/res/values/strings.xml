@@ -9,6 +9,7 @@
 
     <string name="general_list">Sets</string>
     <string name="favorites">Favorites</string>
-    <string name="remove_card_to_deck">remove card to deck</string>
+    <string name="remove_card_to_deck">remove card from deck</string>
+    <string name="text_empty_deck">Your deck does not have any card!</string>
 
 </resources>

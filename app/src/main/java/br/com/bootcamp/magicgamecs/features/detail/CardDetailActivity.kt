@@ -10,25 +10,21 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_card_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CardDetailActivity : AppCompatActivity() {
+class CardDetailActivity : AppCompatActivity(R.layout.activity_card_detail) {
 
     private val detailViewModel by viewModel<DetailViewModel>()
 
-    private lateinit var card: Card
+    private val card by lazy {
+        intent.getParcelableExtra<Card>("CARD")
+    }
     private lateinit var cards: List<Card>
 
     private var inDeck = false
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_card_detail)
-
-        card = intent.getParcelableExtra<Card>("CARD")
-
-        val card = intent.getParcelableExtra<Card>("CARD")
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
         card_image.card = card
-
 
         imageView_close_detail.setOnClickListener {
             finish()

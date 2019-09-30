@@ -3,6 +3,7 @@ package br.com.bootcamp.magicgamecs.models.pojo
 sealed class ViewState<out T> {
 
     object FirstLaunch : ViewState<Nothing>()
+    object Empty : ViewState<Nothing>()
 
     sealed class Loading<T> : ViewState<T>() {
         object FromEmpty : Loading<Nothing>()

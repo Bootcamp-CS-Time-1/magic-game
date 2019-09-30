@@ -39,20 +39,20 @@ package br.com.bootcamp.magicgamecs.domain
  * }
  * ```
  */
-abstract class UseCase<Params, Source> {
-    abstract fun run(params: Params): Source
+abstract class CoUseCase<Params, Source> {
+    abstract suspend fun run(params: Params): Source
 
     @Throws(Exception::class)
-    operator fun invoke(params: Params) = run(params)
+    suspend operator fun invoke(params: Params) = run(params)
 
-    abstract class NoParam<Source> : UseCase<None, Source>() {
-        abstract fun run(): Source
+    abstract class NoParam<Source> : CoUseCase<None, Source>() {
+        abstract suspend fun run(): Source
 
-        final override fun run(params: None) =
+        final override suspend fun run(params: None) =
             throw UnsupportedOperationException()
 
         @Throws(Exception::class)
-        operator fun invoke(): Source = run()
+        suspend operator fun invoke(): Source = run()
     }
 
     object None
